@@ -2,6 +2,7 @@ import React from "react";
 import agency1 from "../../../../assets/agency1.png";
 import { CiLocationOn, CiMail, CiPhone } from "react-icons/ci";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 const SingleAgencyCard = () => {
   return (
     <div className="card bg-base-100 shadow-sm group hover:shadow-xl transition-all duration-300 rounded-lg">
@@ -32,10 +33,10 @@ const SingleAgencyCard = () => {
           </div>
         </div>
         <div className="card-actions justify-end">
-          <button className="flex items-center gap-2 btn btn-sm rounded-full bg-orange-500 shadow-lg hover:bg-white hover:text-black text-white">
+          <Link to={'/all-agency/ss'} className="flex items-center gap-2 btn btn-sm rounded-full bg-orange-500 shadow-lg hover:bg-white hover:text-black text-white">
             View Profile
             <FaArrowRightLong className="animate-pulse" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

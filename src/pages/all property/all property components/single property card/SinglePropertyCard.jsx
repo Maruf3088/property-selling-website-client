@@ -5,6 +5,7 @@ import { IoIosGitCompare } from "react-icons/io";
 import { IoBedOutline } from "react-icons/io5";
 import { LiaBathSolid } from "react-icons/lia";
 import { GiThermometerScale } from "react-icons/gi";
+import { Link } from "react-router-dom";
 
 const SinglePropertyCard = () => {
   return (
@@ -28,7 +29,7 @@ const SinglePropertyCard = () => {
       </figure>
       <div className="card-body">
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold group-hover:text-orange-500 transition-all duration-300 cursor-pointer ">Little Acorn Farm</h2>
+          <Link to={'/all-property/ss'} className="text-2xl font-bold group-hover:text-orange-500 transition-all duration-300 cursor-pointer ">Little Acorn Farm</Link>
           <p className="text-xl font-semibold text-orange-500 ">$6,558.00*</p>
           <p className="text-gray-600">
             A card component has a figure, a body part, and inside body there
@@ -54,7 +55,7 @@ const SinglePropertyCard = () => {
         </div>
         <div className="flex justify-between  items-center mt-5 ">
           <h1 className="text-gray-600 font-semibold ">March 25, 2023</h1>
-          <button className="btn rounded-full bg-orange-500 shadow-lg hover:bg-white hover:text-black text-white">Details</button>
+          <Link to={'/all-property/ss'} className="btn rounded-full bg-orange-500 shadow-lg hover:bg-white hover:text-black text-white">Details</Link>
         </div>
       </div>
     </div>
