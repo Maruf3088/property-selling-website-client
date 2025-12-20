@@ -5,6 +5,8 @@ import AllProperty from "../pages/all property/AllProperty";
 import PropertyDetailsPage from "../pages/property details page/PropertyDetailsPage";
 import AllAgency from "../pages/all agency/AllAgency";
 import AgencyProfile from "../pages/agency profile/AgencyProfile";
+import Login from "../pages/login/Login";
+import Register from "../pages/register/Register";
 
 const router = createBrowserRouter([
   {
@@ -34,5 +36,14 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:'/login',
+    element:<Login></Login>
+
+  },
+  {
+    path:'/register',
+    element:<Register></Register>
+  }
 ]);
 export default router;

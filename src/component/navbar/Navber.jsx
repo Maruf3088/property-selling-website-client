@@ -70,7 +70,7 @@ const Navbar = () => {
             </Link>
 
             <Link
-              to="/signup"
+              to="/register"
               className="flex items-center space-x-1 px-4 py-2 bg-orange-600 text-white font-medium rounded-lg hover:bg-white hover:text-orange-600 outline active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg group text-sm"
             >
               <svg
@@ -153,7 +153,7 @@ const Navbar = () => {
               Log In
             </Link>
             <Link
-              to="/signup"
+              to="/register"
               className="block px-3 py-2 text-center bg-orange-600 text-white font-medium rounded-lg hover:bg-white hover:text-orange-600 transition-colors duration-200"
               onClick={() => setIsOpen(false)}
             >
