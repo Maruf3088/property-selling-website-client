@@ -6,7 +6,8 @@ const FeaturePropertySidebar = () => {
       <div>
         <h1 className="font-bold text-3xl">Featured Properties</h1>
         <p className="text-gray-500">
-          Showing <span className="text-orange-500">best featured</span> Properties
+          Showing <span className="text-orange-500">best featured</span>{" "}
+          Properties
         </p>
       </div>
 
