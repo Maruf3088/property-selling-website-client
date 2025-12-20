@@ -1,0 +1,38 @@
+import React from "react";
+import SingleAgencyCard from "../single agency card/SingleAgencyCard";
+import FeaturePropertySidebar from "../feature property sidebar/FeaturePropertySidebar";
+
+const AgencyListing = () => {
+  return (
+    <div className="container mx-auto py-8 px-4">
+      <div className="grid grid-cols-1 lg:grid-cols-8 items-start gap-2">
+        {/* Agency listing */}
+        <div className="lg:col-span-6">
+          <div>
+            <h1 className="font-bold text-3xl">Agency Listing</h1>
+            <p className="text-gray-500">
+              Showing <span className="text-orange-500">1–6 of 35</span>{" "}
+              Listings
+            </p>
+          </div>
+
+          <div className="divider mt-5" />
+
+          {/* Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {[...Array(9)].map((_, i) => (
+              <SingleAgencyCard key={i} />
+            ))}
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <aside className="hidden lg:block lg:col-span-2">
+          <FeaturePropertySidebar />
+        </aside>
+      </div>
+    </div>
+  );
+};
+
+export default AgencyListing;
