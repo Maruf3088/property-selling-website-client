@@ -7,6 +7,7 @@ import AllAgency from "../pages/all agency/AllAgency";
 import AgencyProfile from "../pages/agency profile/AgencyProfile";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/all-property/:id",
-        element: <PropertyDetailsPage></PropertyDetailsPage>,
+        element: (
+          <PrivateRoute>
+            <PropertyDetailsPage></PropertyDetailsPage>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/all-agency",
@@ -34,16 +39,15 @@ const router = createBrowserRouter([
         path: "/all-agency/:id",
         element: <AgencyProfile></AgencyProfile>,
       },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/register",
+        element: <Register></Register>,
+      },
     ],
-  },
-  {
-    path:'/login',
-    element:<Login></Login>
-
-  },
-  {
-    path:'/register',
-    element:<Register></Register>
   }
 ]);
 export default router;
