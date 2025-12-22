@@ -11,21 +11,25 @@ import "swiper/css/thumbs";
 // Modules
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import { useParams } from "react-router-dom";
+import usePropertyById from "../../../../../hooks/userPropertyById";
 
 const GalleryTab = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-  const images = [
-    "https://swiperjs.com/demos/images/nature-1.jpg",
-    "https://swiperjs.com/demos/images/nature-2.jpg",
-    "https://swiperjs.com/demos/images/nature-3.jpg",
-    "https://swiperjs.com/demos/images/nature-4.jpg",
-    "https://swiperjs.com/demos/images/nature-5.jpg",
-    "https://swiperjs.com/demos/images/nature-6.jpg",
-    "https://swiperjs.com/demos/images/nature-7.jpg",
-    "https://swiperjs.com/demos/images/nature-8.jpg",
-    "https://swiperjs.com/demos/images/nature-9.jpg",
-  ];
+  const { id } = useParams();
+  const { data: property, isLoading } = usePropertyById(id);
+
+  const images = property.images;
+  if (isLoading)
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+        <span className="loading loading-spinner loading-xl text-orange-500"></span>
+        <p className="mt-4 text-sm text-gray-500 tracking-wide">
+          loading data...
+        </p>
+      </div>
+    );
 
   return (
     <div className="w-full relative p-4 sm:p-7">

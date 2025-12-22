@@ -1,7 +1,9 @@
 import React from "react";
 import SinglePropertyCard from "../../../all property/all property components/single property card/SinglePropertyCard";
+import useProperties from "../../../../hooks/useProperties";
 
 const RelatedPropertySection = () => {
+  const { data: property } = useProperties();
   return (
     <div className="pb-8 px-2 md:px-0">
       <div className=" mb-10">
@@ -14,9 +16,12 @@ const RelatedPropertySection = () => {
       </div>
       {/* cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
+        {property?.map((property) => (
+          <SinglePropertyCard
+            key={property._id}
+            property={property}
+          ></SinglePropertyCard>
+        ))}
       </div>
     </div>
   );

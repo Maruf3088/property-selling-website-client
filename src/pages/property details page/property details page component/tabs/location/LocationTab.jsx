@@ -1,10 +1,24 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import usePropertyById from "../../../../../hooks/userPropertyById";
 
 const LocationTab = () => {
-  const propertyAddress = "cox'sbazar , bangladesh"; // Replace with your property address
+  const { id } = useParams();
+  const { data: property, isLoading } = usePropertyById(id);
+  const propertyAddress = property?.location?.address; // Replace with your property address
   const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
     propertyAddress
   )}&output=embed`;
+
+  if (isLoading)
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+        <span className="loading loading-spinner loading-xl text-orange-500"></span>
+        <p className="mt-4 text-sm text-gray-500 tracking-wide">
+          loading data...
+        </p>
+      </div>
+    );
 
   return (
     <div className="w-full py-10 bg-gray-50">

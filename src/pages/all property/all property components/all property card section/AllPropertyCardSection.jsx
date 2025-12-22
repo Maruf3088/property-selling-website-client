@@ -5,6 +5,7 @@ import FilterSection from "../filter section/FilterSection";
 import CategoryFilterSection from "../category section/CategoryFilterSection";
 import ContactInfo from "../contact info/ContactInfo";
 import RecentlyAddedSection from "../recently added property/RecentlyAddedSection";
+import useProperties from "../../../../hooks/useProperties";
 
 const AllPropertyCardSection = () => {
   const [open, setOpen] = useState(false);
@@ -17,15 +18,27 @@ const AllPropertyCardSection = () => {
   const DrawerList = (
     <Box sx={{ width: 350 }} role="presentation" onClick={toggleDrawer(false)}>
       {/* filter section */}
-        <div className="   bg-white shadow-xl rounded-xl px-4 py-6">
-          <h1 className="font-semibold text-2xl ">Advance search</h1>
-          <FilterSection></FilterSection>
-          <CategoryFilterSection></CategoryFilterSection>
-          <ContactInfo></ContactInfo>
-          <RecentlyAddedSection></RecentlyAddedSection>
-        </div>
+      <div className="   bg-white shadow-xl rounded-xl px-4 py-6">
+        <h1 className="font-semibold text-2xl ">Advance search</h1>
+        <FilterSection></FilterSection>
+        <CategoryFilterSection></CategoryFilterSection>
+        <ContactInfo></ContactInfo>
+        <RecentlyAddedSection></RecentlyAddedSection>
+      </div>
     </Box>
   );
+
+  // fetch property data
+  const { data: properties, isLoading } = useProperties({});
+  if (isLoading)
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+        <span className="loading loading-spinner loading-xl text-orange-500"></span>
+        <p className="mt-4 text-sm text-gray-500 tracking-wide">
+          loading data...
+        </p>
+      </div>
+    );
 
   return (
     <div className="my-5">
@@ -52,15 +65,12 @@ const AllPropertyCardSection = () => {
       <div className="divider mt-5"></div>
       {/* all card section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
-        <SinglePropertyCard></SinglePropertyCard>
+        {properties?.map((property) => (
+          <SinglePropertyCard
+            key={property._id}
+            property={property}
+          ></SinglePropertyCard>
+        ))}
       </div>
     </div>
   );

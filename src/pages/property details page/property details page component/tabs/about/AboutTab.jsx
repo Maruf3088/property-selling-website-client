@@ -14,8 +14,28 @@ import {
   FaImage,
   FaDownload,
 } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import usePropertyById from "../../../../../hooks/userPropertyById";
 
 const AboutTab = () => {
+  const { id } = useParams();
+  const { data: property, isLoading } = usePropertyById(id);
+  const {
+    propertyType,
+    propertyStatus,
+    price,
+    details: { beds, baths, area, buildYear },
+    description,
+  } = property;
+  if (isLoading)
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+        <span className="loading loading-spinner loading-xl text-orange-500"></span>
+        <p className="mt-4 text-sm text-gray-500 tracking-wide">
+          loading data...
+        </p>
+      </div>
+    );
   return (
     <div className="md:bg-gray-50  md:p-6 sm:p-8 rounded-xl md:shadow-lg">
       <div className="space-y-12">
@@ -44,33 +64,37 @@ const AboutTab = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-4">
-              <Detail label="Property Type" value="House" icon={<FaHome />} />
+              <Detail
+                label="Property Type"
+                value={propertyType}
+                icon={<FaHome />}
+              />
               <Detail
                 label="Operating Since"
-                value="2008"
+                value={buildYear}
                 icon={<FaCalendarAlt />}
               />
               <Detail
                 label="Property Size"
-                value="2200 sq ft"
+                value={`${area} sq ft`}
                 icon={<FaRulerCombined />}
               />
             </div>
 
             <div className="space-y-4">
-              <Detail label="Bedrooms" value="3" icon={<FaBed />} />
-              <Detail label="Bathrooms" value="2" icon={<FaBath />} />
+              <Detail label="Bedrooms" value={beds} icon={<FaBed />} />
+              <Detail label="Bathrooms" value={baths} icon={<FaBath />} />
               <Detail label="Garage" value="1 Car" icon={<FaCar />} />
             </div>
 
             <div className="space-y-4">
+              <Detail label="Price" value={price} icon={<FaMoneyBillWave />} />
+              <Detail label="Status" value={propertyStatus} icon={<FaTag />} />
               <Detail
-                label="Price"
-                value="$450,000"
-                icon={<FaMoneyBillWave />}
+                label="Build Year"
+                value={buildYear}
+                icon={<FaBuilding />}
               />
-              <Detail label="Status" value="For Sale" icon={<FaTag />} />
-              <Detail label="Build Year" value="2010" icon={<FaBuilding />} />
             </div>
           </div>
         </div>
@@ -104,22 +128,15 @@ const AboutTab = () => {
         </div>
 
         {/* PROPERTY BRIEF */}
-        <div className="space-y-4 pt-4 border-t border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-700">Property Brief</h2>
+        <p className="text-gray-700 leading-relaxed">
+          {description.length > 300 ? description.slice(0, 300) : description}
+        </p>
 
+        {description.length > 300 && (
           <p className="text-gray-700 leading-relaxed">
-            This beautiful 3-bedroom family house is located in a peaceful
-            residential area with easy access to schools, shopping centers, and
-            parks. It features a modern open-plan kitchen, spacious living room,
-            and a private backyard.
+            {description.slice(300)}
           </p>
-
-          <p className="text-gray-700 leading-relaxed">
-            Renovated in 2022, the property includes a high-efficiency heating
-            system and premium flooring. Ideal for families seeking comfort,
-            convenience, and long-term value.
-          </p>
-        </div>
+        )}
       </div>
     </div>
   );

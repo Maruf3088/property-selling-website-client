@@ -101,8 +101,8 @@ const Navbar = () => {
                   data-tip="Favourites"
                 >
                   <div className="indicator">
-                    <FaHeart color="#F54900" size={25} />
-                    <span className="badge badge-sm indicator-item">8</span>
+                    <CiHeart  size={28} />
+                    <span className="h-5 w-5 flex items-center justify-center bg-red-500 rounded-full text-white indicator-item">8</span>
                   </div>
                 </div>
 
@@ -112,8 +112,8 @@ const Navbar = () => {
                   data-tip="Notifications"
                 >
                   <div className="indicator">
-                    <MdNotificationsActive color="#FBBF24" size={25} />
-                    <span className="badge badge-sm indicator-item">8</span>
+                    <MdNotificationsActive  size={28} />
+                    <span className="h-5 w-5 flex items-center justify-center bg-red-500 rounded-full text-white indicator-item">8</span>
                   </div>
                 </div>
 
@@ -123,8 +123,8 @@ const Navbar = () => {
                   data-tip="Messages"
                 >
                   <div className="indicator">
-                    <RiMessage2Fill color="#A6A5E0" size={25} />
-                    <span className="badge badge-sm indicator-item">8</span>
+                    <RiMessage2Fill  size={25} />
+                    <span className="h-5 w-5 flex items-center justify-center bg-red-500 rounded-full text-white indicator-item">8</span>
                   </div>
                 </div>
               </div>

@@ -6,14 +6,24 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import { useParams } from "react-router-dom";
+import usePropertyById from "../../../../../hooks/userPropertyById";
 
 const VideoTab = () => {
-  const videos = [
-    "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "https://www.youtube.com/embed/3JZ_D3ELwOQ",
-    "https://www.youtube.com/embed/tgbNymZ7vqY",
-    "https://www.youtube.com/embed/5NV6Rdv1a3I",
-  ];
+  const { id } = useParams();
+  const { data: property, isLoading } = usePropertyById(id);
+
+   const videos = property.videos;
+  if (isLoading)
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+        <span className="loading loading-spinner loading-xl text-orange-500"></span>
+        <p className="mt-4 text-sm text-gray-500 tracking-wide">
+          loading data...
+        </p>
+      </div>
+    );
+ 
 
   return (
     <div className="w-full py-10 bg-gray-50">

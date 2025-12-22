@@ -16,8 +16,14 @@ import {
   MdDateRange,
   MdAccessTime,
 } from "react-icons/md";
+import { useParams } from "react-router-dom";
+import usePropertyById from "../../../../hooks/userPropertyById";
 
 const SendRequestSection = () => {
+    const { id } = useParams();
+  const { data: property } = usePropertyById(id);
+
+   
   return (
     <section className="md:bg-gray-50 py-8 rounded-xl">
       <div className="max-w-6xl mx-auto px-4 space-y-12">
@@ -35,17 +41,17 @@ const SendRequestSection = () => {
         <div className="grid md:grid-cols-1 gap-10 items-start">
           {/* ---- Agent Info ---- */}
           <div className="bg-white p-8 rounded-xl shadow-lg space-y-6">
-            <h3 className="text-2xl font-semibold text-gray-800">John Doe</h3>
+            <h3 className="text-2xl font-semibold text-gray-800">{property?.agent?.name}</h3>
             <p className="text-gray-500">Senior Real Estate Agent</p>
 
             <div className="space-y-3 mt-4">
               <div className="flex items-center gap-3 text-gray-600">
                 <FaEnvelope className="text-orange-600" />
-                <span>john.doe@example.com</span>
+                <span>{property?.agent?.email}</span>
               </div>
               <div className="flex items-center gap-3 text-gray-600">
                 <FaPhone className="text-orange-600" />
-                <span>+1 234 567 890</span>
+                <span>{property?.agent?.phone}</span>
               </div>
             </div>
 

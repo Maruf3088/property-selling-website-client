@@ -10,12 +10,10 @@ import "lightgallery/css/lightgallery.css";
 import "lightgallery/css/lg-thumbnail.css";
 import "lightgallery/css/lg-zoom.css";
 
-import image1 from "../../../../assets/newsletterbg.jpg";
-import image2 from "../../../../assets/recent1.jpg";
-import image3 from "../../../../assets/recent2.jpg";
 
-const ImageSlider = () => {
-  const images = [image1, image2, image3];
+
+const ImageSlider = ({ property }) => {
+  const images = property.images;
 
   return (
     // Outer container: Full width, no padding at top/sides

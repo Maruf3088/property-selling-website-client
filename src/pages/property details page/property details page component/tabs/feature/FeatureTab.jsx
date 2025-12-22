@@ -10,23 +10,31 @@ import {
   FaStethoscope,
   FaShower,
   FaParking,
-  FaSnowflake,
+  
+  
 } from "react-icons/fa";
+import { CgGym } from "react-icons/cg";
+import { TbAirConditioning } from "react-icons/tb";
+
+import { useParams } from "react-router-dom";
+import usePropertyById from "../../../../../hooks/userPropertyById";
 
 // Data mapping the features to their corresponding icons
-const featuresData = [
-  { name: "Free Wi-Fi", icon: FaWifi },
-  { name: "Elevator Lift", icon: FaBuilding },
-  { name: "Power Backup", icon: FaBatteryFull },
-  { name: "Laundry Service", icon: FaTshirt },
-  { name: "Security Guard", icon: FaShieldAlt },
-  { name: "CCTV Surveillance", icon: FaVideo },
-  { name: "Emergency Exit", icon: FaDoorOpen },
-  { name: "Doctor On Call", icon: FaStethoscope },
-  { name: "Private Shower", icon: FaShower },
-  { name: "Free Parking", icon: FaParking },
-  { name: "Air Conditioning", icon: FaSnowflake },
-];
+const amenitiesIconMap = {
+  Lift: FaBuilding,
+  Parking: FaParking,
+  Security: FaShieldAlt,
+  Generator: FaBatteryFull,
+  "Free Wi-Fi": FaWifi,
+  Laundry: FaTshirt,
+  CCTV: FaVideo,
+  "Air Conditioning": TbAirConditioning ,
+  Shower: FaShower,
+  Doctor: FaStethoscope,
+  "Emergency Exit": FaDoorOpen,
+  Gym: CgGym ,
+  // add all other possible amenities
+};
 
 const FeatureItem = ({ name, Icon }) => {
   return (
@@ -45,6 +53,26 @@ const FeatureItem = ({ name, Icon }) => {
 };
 
 const FeatureTab = () => {
+  const { id } = useParams();
+  const { data: property, isLoading } = usePropertyById(id);
+
+  const { amenities } = property || [];
+
+  // Map amenities to icons
+  const amenitiesWithIcons = amenities.map((name) => ({
+    name,
+    Icon: amenitiesIconMap[name] || null, // fallback if icon not found
+  }));
+
+  if (isLoading)
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+        <span className="loading loading-spinner loading-xl text-orange-500"></span>
+        <p className="mt-4 text-sm text-gray-500 tracking-wide">
+          loading data...
+        </p>
+      </div>
+    );
   return (
     <section className="py-12 md:bg-gray-50">
       <div className="container mx-auto px-4 max-w-6xl">
@@ -59,11 +87,11 @@ const FeatureTab = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuresData.map((feature) => (
+          {amenitiesWithIcons.map((feature) => (
             <FeatureItem
               key={feature.name}
               name={feature.name}
-              Icon={feature.icon}
+              Icon={feature.Icon}
             />
           ))}
         </div>

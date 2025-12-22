@@ -42,6 +42,7 @@ const Register = () => {
         "https://api.cloudinary.com/v1_1/dunx2j1ru/image/upload",
         formData
       );
+      console.log(data)
       setImageUrl(data.secure_url);
     } catch (err) {
       console.error("Cloudinary upload error:", err);
@@ -68,7 +69,7 @@ const Register = () => {
       await logout();
 
       const { password, confirmPassword, privacy, username, ...userData } =
-    finalData;
+        finalData;
       userData.createdAt = new Date().toISOString();
 
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
@@ -107,7 +108,11 @@ const Register = () => {
         email: loggedInUser.email,
       };
 
-      await axios.post(`${import.meta.env.VITE_API_URL}/users`, finalUserData);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users`,
+        finalUserData
+      );
+      console.log(data);
     } catch (error) {
       console.error(error);
       toast.error(error.message || "Google login failed!");

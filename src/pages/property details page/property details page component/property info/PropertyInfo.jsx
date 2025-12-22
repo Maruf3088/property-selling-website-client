@@ -7,41 +7,49 @@ import { IoBedOutline } from "react-icons/io5";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { PiBathtubLight, PiGarageLight } from "react-icons/pi";
 
-const PropertyInfo = () => {
+const PropertyInfo = ({ property }) => {
+  const {
+    propertyName,
+    price,
+    propertyStatus,
+
+    details,
+
+    amenities,
+    location,
+  } = property;
   return (
     <div className="container mx-auto ">
       <div className="bg-white p-6 sm:p-8 rounded-2xl md:shadow-lg my-10 flex flex-col lg:flex-row gap-6 md:gap-10">
         {/* Left Section */}
         <div className="flex-1">
           <div className="flex flex-row items-center gap-4">
-            <h1 className="text-3xl sm:text-4xl font-bold">
-              Little Acorn Farm
-            </h1>
+            <h1 className="text-3xl sm:text-4xl font-bold">{propertyName}</h1>
             <p className="bg-red-500 px-4 text-white font-semibold rounded-lg py-1 mt-2 sm:mt-0 w-max">
-              For Sale
+              {propertyStatus}
             </p>
           </div>
           <p className="uppercase tracking-[4px] font-semibold text-lg mb-4 text-gray-600">
-            France
+            {location.country}
           </p>
 
           {/* Property Icons */}
           <div className="flex flex-wrap gap-4 mb-4">
             <div className="flex items-center gap-1 font-medium text-gray-600 hover:text-orange-500 transition-all duration-300">
               <IoBedOutline />
-              <span>1 Bedroom</span>
+              <span>{details.beds} Bedroom</span>
             </div>
             <div className="flex items-center gap-1 font-medium text-gray-600 hover:text-orange-500 transition-all duration-300">
               <PiBathtubLight />
-              <span>1 Bathroom</span>
+              <span>{details.baths} Bathroom</span>
             </div>
             <div className="flex items-center gap-1 font-medium text-gray-600 hover:text-orange-500 transition-all duration-300">
               <MdOutlineBedroomParent />
-              <span>1 Room</span>
+              <span>{details.totalRoom} Room</span>
             </div>
             <div className="flex items-center gap-1 font-medium text-gray-600 hover:text-orange-500 transition-all duration-300">
               <GiThermometerScale />
-              <span>5000 Sq ft</span>
+              <span>{details.area} Sq ft</span>
             </div>
             <div className="flex items-center gap-1 font-medium text-gray-600 hover:text-orange-500 transition-all duration-300">
               <PiGarageLight />
@@ -91,7 +99,7 @@ const PropertyInfo = () => {
           </div>
 
           <h2 className="text-2xl sm:text-3xl font-bold text-orange-500 mt-2 text-left lg:text-right">
-            $ 2,500,000{" "}
+            $ {price}{" "}
             <span className="text-gray-600 text-sm sm:text-lg font-semibold">
               /start from
             </span>
@@ -100,14 +108,16 @@ const PropertyInfo = () => {
           {/* Badges */}
           <div className="flex flex-wrap justify-start lg:justify-end gap-2 mt-4">
             <div className=" badge badge-neutral badge-dash badge-outline badge-sm border-orange-500 text-orange-500">
-              WiFi
+              {amenities[0]}
             </div>
             <div className="badge badge-neutral badge-dash badge-outline badge-sm border-orange-500 text-orange-500">
-              Swimming Pool
+              {amenities[1]}
             </div>
-            <div className="badge badge-neutral badge-dash badge-outline badge-sm border-orange-500 text-orange-500">
-              Gym
-            </div>
+            {amenities[2] && (
+              <div className="badge badge-neutral badge-dash badge-outline badge-sm border-orange-500 text-orange-500">
+                {amenities[2]}
+              </div>
+            )}
           </div>
         </div>
       </div>
