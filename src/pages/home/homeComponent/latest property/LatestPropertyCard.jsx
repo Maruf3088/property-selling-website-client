@@ -2,7 +2,7 @@ import React from "react";
 import { MdOutlineReadMore } from "react-icons/md";
 import { Link } from "react-router-dom";
 
-const LatestPropertyCard = () => {
+const LatestPropertyCard = ({item}) => {
   return (
     <div className="w-full">
       <div
@@ -19,7 +19,7 @@ const LatestPropertyCard = () => {
         "
         style={{
           backgroundImage:
-            "url(https://angular.pixelstrap.net/sheltos/assets/images/1.jpg)",
+            `url(${item.thumbnail})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -29,7 +29,7 @@ const LatestPropertyCard = () => {
 
         {/* Badge */}
         <div className="badge bg-orange-500 text-white font-semibold mt-2 ml-2">
-          SALE
+          {item.propertyStatus}
         </div>
 
         {/* Bottom Sliding Panel */}
@@ -47,16 +47,16 @@ const LatestPropertyCard = () => {
             {/* Property Name + Price */}
             <div>
               <h1 className="text-xl sm:text-2xl text-white font-semibold">
-                Never Land
+               {item.propertyName}
               </h1>
               <p className="text-sm sm:text-lg text-white">
-                $130000 <span className="text-xs sm:text-sm">/start from</span>
+                ${item.price} <span className="text-xs sm:text-sm">/start from</span>
               </p>
             </div>
 
             {/* Details Button */}
             <Link
-              to="/signup"
+              to={`all-property/${item._id}`}
               className="
                 flex items-center 
                 space-x-1 px-3 sm:px-4 
@@ -79,19 +79,19 @@ const LatestPropertyCard = () => {
           <div className="flex w-full text-sm sm:text-base">
             <div className="bg-[#636363] flex-1 p-2 text-white text-center">
               <h1>Beds</h1>
-              <p>2</p>
+              <p>{item.details.beds}</p>
             </div>
             <div className="bg-[#565656] flex-1 p-2 text-white text-center">
               <h1>Bath</h1>
-              <p>2</p>
+              <p>{item.details.baths}</p>
             </div>
             <div className="bg-[#494949] flex-1 p-2 text-white text-center">
               <h1>Balcony</h1>
-              <p>2</p>
+              <p>{item.details.belcony}</p>
             </div>
             <div className="bg-[#3E3D3D] flex-1 p-2 text-white text-center">
               <h1>Area</h1>
-              <p>2</p>
+              <p>{item.details.area}</p>
             </div>
           </div>
         </div>

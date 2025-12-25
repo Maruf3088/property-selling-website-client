@@ -1,75 +1,46 @@
 import React, { useState } from "react";
 import SinglePropertyCard from "../single property card/SinglePropertyCard";
-import { Box, Drawer } from "@mui/material";
+import { Drawer } from "@mui/material";
 import FilterSection from "../filter section/FilterSection";
 import CategoryFilterSection from "../category section/CategoryFilterSection";
 import ContactInfo from "../contact info/ContactInfo";
 import RecentlyAddedSection from "../recently added property/RecentlyAddedSection";
-import useProperties from "../../../../hooks/useProperties";
 
-const AllPropertyCardSection = () => {
-  const [open, setOpen] = useState(false);
+const AllPropertyCardSection = ({ properties, filter, setFilter }) => {
+  const [openDrawer, setOpenDrawer] = useState(false);
 
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
-  };
+  const toggleDrawer = (open) => () => setOpenDrawer(open);
 
-  // Drawer list component
-  const DrawerList = (
-    <Box sx={{ width: 350 }} role="presentation" onClick={toggleDrawer(false)}>
-      {/* filter section */}
-      <div className="   bg-white shadow-xl rounded-xl px-4 py-6">
-        <h1 className="font-semibold text-2xl ">Advance search</h1>
-        <FilterSection></FilterSection>
-        <CategoryFilterSection></CategoryFilterSection>
-        <ContactInfo></ContactInfo>
-        <RecentlyAddedSection></RecentlyAddedSection>
-      </div>
-    </Box>
+  const drawerContent = (
+    <div className="w-80 h-full p-4 bg-white flex flex-col gap-6 overflow-y-auto">
+      <h1 className="text-2xl font-bold mb-2">Advanced Filters</h1>
+      <FilterSection filter={filter} setFilter={setFilter} />
+      <CategoryFilterSection filter={filter} setFilter={setFilter} />
+      <ContactInfo />
+      <RecentlyAddedSection />
+    </div>
   );
-
-  // fetch property data
-  const { data: properties, isLoading } = useProperties({});
-  if (isLoading)
-    return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
-        <span className="loading loading-spinner loading-xl text-orange-500"></span>
-        <p className="mt-4 text-sm text-gray-500 tracking-wide">
-          loading data...
-        </p>
-      </div>
-    );
 
   return (
     <div className="my-5">
-      <div>
-        <div>
-          <h1 className=" font-bold text-3xl">Property Listing</h1>
-          <p className="text-gray-500">
-            Showing <span className="text-orange-500">1- 6 of 35</span> Listings
-          </p>
-        </div>
-      </div>
-      <div>
-        {/* filter option */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold">Property Listings</h1>
+        {/* Mobile Filter Button */}
         <button
           onClick={toggleDrawer(true)}
-          className="btn lg:hidden mt-4 rounded-full bg-orange-500 shadow-lg hover:bg-white hover:text-black text-white"
+          className="lg:hidden py-2 px-4 bg-orange-500 text-white rounded-full shadow hover:bg-white hover:text-orange-500 transition-all"
         >
-          Advance search
+          Filter
         </button>
-        <Drawer open={open} onClose={toggleDrawer(false)}>
-          {DrawerList}
+        <Drawer open={openDrawer} onClose={toggleDrawer(false)}>
+          {drawerContent}
         </Drawer>
       </div>
-      <div className="divider mt-5"></div>
-      {/* all card section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {properties?.map((property) => (
-          <SinglePropertyCard
-            key={property._id}
-            property={property}
-          ></SinglePropertyCard>
+
+      {/* Property Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {properties.map((property) => (
+          <SinglePropertyCard key={property._id} property={property} />
         ))}
       </div>
     </div>

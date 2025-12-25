@@ -1,118 +1,86 @@
 import { Link } from "react-router-dom";
-import herobg from "../../../../assets/herobg.jpg";
-import Particles from "react-tsparticles";
-import { useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const Hero = () => {
-  const [toggle, setToggle] = useState("sell");
-
   return (
-    <div
-      className="pb-36 pt-10 sm:pt-20"
-      style={{
-        backgroundImage: "url(" + (herobg || "/placeholder.svg") + ")",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="container mx-auto px-4">
-        <div className="max-w-[95%]">
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 pt-24 pb-32">
+      {/* Decorative background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-600/10 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-tr from-blue-500/20 to-cyan-600/10 blur-3xl" />
+      </div>
 
-          {/* Heading */}
-          <h1 className="mb-5 text-3xl sm:text-4xl lg:text-6xl font-bold text-blue-950 tracking-wide leading-tight">
-            You're local Real estate <br />
-            professionals
-          </h1>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-center">
 
-          {/* Subtitle */}
-          <p className="mb-5 text-white text-sm sm:text-base max-w-xl">
-            Residences can be classified by and connected to residences.
-            Different types of housing can use the same physical type.
-          </p>
+          {/* LEFT CONTENT */}
+          <div className="space-y-8 text-center lg:text-left">
+            <div className="inline-block rounded-full bg-linear-to-r from-amber-500/10 to-orange-600/10 px-4 py-2 text-sm font-semibold text-amber-400 border border-amber-500/20">
+              Welcome to Modern Real Estate
+            </div>
 
-          {/* Toggle Buttons */}
-          <div className="flex flex-col sm:flex-row sm:space-x-4 mb-6 gap-3 sm:gap-0">
-            <button
-              onClick={() => setToggle("sell")}
-              className={`px-4 py-2 font-medium rounded-lg transition-all duration-200 w-full sm:w-auto ${
-                toggle === "sell"
-                  ? "bg-orange-600 text-white"
-                  : "bg-white text-orange-600 hover:bg-orange-600 hover:text-white"
-              }`}
-            >
-              For Sell
-            </button>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+              <span className="block text-white mb-2">Your Local Real Estate</span>
+              <span className="block bg-linear-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+                Professionals
+              </span>
+            </h1>
 
-            <button
-              onClick={() => setToggle("rent")}
-              className={`px-4 py-2 font-medium rounded-lg transition-all duration-200 w-full sm:w-auto ${
-                toggle === "rent"
-                  ? "bg-orange-600 text-white"
-                  : "bg-white text-orange-600 hover:bg-orange-600 hover:text-white"
-              }`}
-            >
-              For Rent
-            </button>
+            <p className="mx-auto lg:mx-0 max-w-2xl text-base sm:text-lg text-slate-300 leading-relaxed">
+              Whether you're buying your dream home or selling your property, we
+              provide expert guidance and personalized service to make your real
+              estate journey seamless and successful.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Link to="/buyer">
+                <button className="w-full sm:w-auto px-6 py-3 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-950 font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center">
+                  Go as a Buyer
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </button>
+              </Link>
+
+              <Link to="/seller">
+                <button className="w-full sm:w-auto px-6 py-3 rounded-lg border border-slate-600 text-white hover:bg-slate-800/50 font-semibold hover:border-slate-400 transition-all flex items-center justify-center">
+                  Go as a Seller
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </button>
+              </Link>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-10 border-t border-slate-700 max-w-2xl mx-auto lg:mx-0">
+              <div>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-400">500+</p>
+                <p className="text-sm text-slate-400">Properties Listed</p>
+              </div>
+              <div>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-400">1000+</p>
+                <p className="text-sm text-slate-400">Happy Clients</p>
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <p className="text-2xl sm:text-3xl font-bold text-amber-400">15 Years</p>
+                <p className="text-sm text-slate-400">Industry Experience</p>
+              </div>
+            </div>
           </div>
 
-          {/* Search Box */}
-          <div className="bg-white p-5 sm:p-8 rounded-xl max-w-3xl">
-            <form className="space-y-4">
-              
-              {/* First Row */}
-              <div className="flex flex-col md:flex-row gap-3">
-                <input
-                  type="text"
-                  placeholder="Search location"
-                  className="input w-full border border-gray-300 rounded px-3 py-2"
-                />
-
-                <select defaultValue="" className="select w-full border border-gray-300 rounded px-3 py-2">
-                  <option value="" disabled>Property Type</option>
-                  <option value="crimson">Crimson</option>
-                  <option value="amber">Amber</option>
-                  <option value="velvet">Velvet</option>
-                </select>
-
-                <select defaultValue={""} className="select w-full border border-gray-300 rounded px-3 py-2">
-                  <option value={""} disabled>Max room</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
-              </div>
-
-              {/* Second Row */}
-              <div className="flex flex-col md:flex-row gap-3">
-                <select defaultValue="" className="select w-full border border-gray-300 rounded px-3 py-2">
-                  <option value="" disabled>Bed</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
-
-                <select defaultValue={""} className="select w-full border border-gray-300 rounded px-3 py-2">
-                  <option value="" disabled>Bath</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
-
-                <button
-                  type="submit"
-                  className="px-3 py-2 bg-orange-600 text-white font-medium rounded-lg w-full md:w-auto hover:bg-white hover:text-orange-600 border border-orange-600 transition-all duration-200"
-                >
-                  Search
-                </button>
-              </div>
-
-            </form>
+          {/* RIGHT LOTTIE */}
+          <div className="hidden lg:flex justify-center items-center">
+            <div className="w-full max-w-[700px] h-[600px]">
+              <DotLottieReact
+                src="/lotties/herolottie.lottie"
+                loop
+                autoplay
+                className="w-full h-full object-center"
+              />
+            </div>
           </div>
 
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

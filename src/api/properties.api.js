@@ -9,3 +9,8 @@ export const fetchProperties = async (filters) => {
 export const fetchPropertyById = (id) => {
   return axiosPublic.get(`/allProperties/${id}`);
 };
+
+export const fetchPropertyType = () => {
+  return axiosPublic.get("/properties/types");
+};
+

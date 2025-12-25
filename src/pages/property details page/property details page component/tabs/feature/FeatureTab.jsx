@@ -10,14 +10,12 @@ import {
   FaStethoscope,
   FaShower,
   FaParking,
-  
-  
 } from "react-icons/fa";
 import { CgGym } from "react-icons/cg";
 import { TbAirConditioning } from "react-icons/tb";
 
 import { useParams } from "react-router-dom";
-import usePropertyById from "../../../../../hooks/userPropertyById";
+import usePropertyById from "../../../../../hooks/usePropertyById";
 
 // Data mapping the features to their corresponding icons
 const amenitiesIconMap = {
@@ -28,11 +26,11 @@ const amenitiesIconMap = {
   "Free Wi-Fi": FaWifi,
   Laundry: FaTshirt,
   CCTV: FaVideo,
-  "Air Conditioning": TbAirConditioning ,
+  "Air Conditioning": TbAirConditioning,
   Shower: FaShower,
   Doctor: FaStethoscope,
   "Emergency Exit": FaDoorOpen,
-  Gym: CgGym ,
+  Gym: CgGym,
   // add all other possible amenities
 };
 

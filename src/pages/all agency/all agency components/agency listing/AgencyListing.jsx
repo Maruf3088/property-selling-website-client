@@ -2,7 +2,7 @@ import React from "react";
 import SingleAgencyCard from "../single agency card/SingleAgencyCard";
 import FeaturePropertySidebar from "../feature property sidebar/FeaturePropertySidebar";
 
-const AgencyListing = () => {
+const AgencyListing = ({allAgency}) => {
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="grid grid-cols-1 lg:grid-cols-8 items-start gap-2">
@@ -20,8 +20,8 @@ const AgencyListing = () => {
 
           {/* Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {[...Array(9)].map((_, i) => (
-              <SingleAgencyCard key={i} />
+            {allAgency?.map(( item) => (
+              <SingleAgencyCard key={item._id} item={item} />
             ))}
           </div>
         </div>

@@ -17,13 +17,12 @@ import {
   MdAccessTime,
 } from "react-icons/md";
 import { useParams } from "react-router-dom";
-import usePropertyById from "../../../../hooks/userPropertyById";
+import usePropertyById from "../../../../hooks/usePropertyById";
 
 const SendRequestSection = () => {
-    const { id } = useParams();
+  const { id } = useParams();
   const { data: property } = usePropertyById(id);
 
-   
   return (
     <section className="md:bg-gray-50 py-8 rounded-xl">
       <div className="max-w-6xl mx-auto px-4 space-y-12">
@@ -41,7 +40,9 @@ const SendRequestSection = () => {
         <div className="grid md:grid-cols-1 gap-10 items-start">
           {/* ---- Agent Info ---- */}
           <div className="bg-white p-8 rounded-xl shadow-lg space-y-6">
-            <h3 className="text-2xl font-semibold text-gray-800">{property?.agent?.name}</h3>
+            <h3 className="text-2xl font-semibold text-gray-800">
+              {property?.agent?.name}
+            </h3>
             <p className="text-gray-500">Senior Real Estate Agent</p>
 
             <div className="space-y-3 mt-4">
@@ -170,8 +171,7 @@ const SendRequestSection = () => {
                 type="submit"
                 className="mt-4 w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2"
               >
-               <BsSend size={17}/>
-
+                <BsSend size={17} />
                 Submit Request
               </button>
             </form>

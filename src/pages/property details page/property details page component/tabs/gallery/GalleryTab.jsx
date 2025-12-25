@@ -12,7 +12,7 @@ import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
-import usePropertyById from "../../../../../hooks/userPropertyById";
+import usePropertyById from "../../../../../hooks/usePropertyById";
 
 const GalleryTab = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);

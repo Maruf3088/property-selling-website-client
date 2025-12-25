@@ -15,7 +15,7 @@ import {
   FaDownload,
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import usePropertyById from "../../../../../hooks/userPropertyById";
+import usePropertyById from "../../../../../hooks/usePropertyById";
 
 const AboutTab = () => {
   const { id } = useParams();

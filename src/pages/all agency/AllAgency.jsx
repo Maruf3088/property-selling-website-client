@@ -2,8 +2,11 @@ import React from "react";
 import bannerImage from "../../assets/all-agency-bg.jpg";
 import Breadcumb from "../../component/breadcrumb/Breadcumb";
 import AgencyListing from "./all agency components/agency listing/AgencyListing";
+import useProperties from "../../hooks/useProperties";
 
 const AllAgency = () => {
+  const {data:allAgency}=useProperties();
+
   return (
     <div className="bg-gray-50">
       <div
@@ -23,7 +26,7 @@ const AllAgency = () => {
         </div>
       </div>
       {/* agency listing */}
-      <AgencyListing></AgencyListing>
+      <AgencyListing allAgency={allAgency}></AgencyListing>
     </div>
   );
 };

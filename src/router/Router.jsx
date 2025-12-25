@@ -37,7 +37,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/all-agency/:id",
-        element: <AgencyProfile></AgencyProfile>,
+        element: (
+          <PrivateRoute>
+            <AgencyProfile></AgencyProfile>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",
@@ -48,6 +52,6 @@ const router = createBrowserRouter([
         element: <Register></Register>,
       },
     ],
-  }
+  },
 ]);
 export default router;

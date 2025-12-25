@@ -7,13 +7,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
-import usePropertyById from "../../../../../hooks/userPropertyById";
+import usePropertyById from "../../../../../hooks/usePropertyById";
 
 const VideoTab = () => {
   const { id } = useParams();
   const { data: property, isLoading } = usePropertyById(id);
 
-   const videos = property.videos;
+  const videos = property.videos;
   if (isLoading)
     return (
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
@@ -23,7 +23,6 @@ const VideoTab = () => {
         </p>
       </div>
     );
- 
 
   return (
     <div className="w-full py-10 bg-gray-50">

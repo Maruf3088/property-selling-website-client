@@ -4,14 +4,14 @@ import bath from "../../../../assets/bath.png";
 import { Link } from "react-router-dom";
 import { MdOutlineReadMore } from "react-icons/md";
 
-const FeaturedPropertyCard = () => {
+const FeaturedPropertyCard = ({item}) => {
   return (
     <div className="w-full flex flex-col sm:flex-row justify-between gap-7 bg-white px-4 lg:px-0">
 
       {/* Image Section */}
       <div className="relative w-full sm:w-1/2">
         <img
-          src="https://angular.pixelstrap.net/sheltos/assets/images/feature/9.jpg"
+          src={item.thumbnail}
           alt="property"
           className="rounded-md w-full h-full object-cover"
         />
@@ -27,16 +27,14 @@ const FeaturedPropertyCard = () => {
         {/* Title + Location */}
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-gray-700 leading-tight">
-            Monumental Real Estate Services
+          {item.propertyName}
           </h1>
           <p className="text-sm sm:text-md text-gray-400">
-            Merrick Way, Miami, FL United Kingdom
+          {item.location.address}
           </p>
 
           <p className="text-sm sm:text-lg text-gray-600 my-4 sm:my-5">
-            Residences can be classified by and how they are connected to
-            neighbouring residences and land. Different types of housing tenure
-            can be used for the same physical type.
+            {item.description.slice(0,400)}
           </p>
         </div>
 
@@ -63,7 +61,7 @@ const FeaturedPropertyCard = () => {
           </div>
 
           <div className="bg-[#FFEEEC] px-3 py-2 rounded-md text-sm sm:text-lg w-fit font-semibold text-orange-500">
-            9532 sq ft
+            {item.details.area} sq ft
           </div>
         </div>
 
@@ -73,7 +71,7 @@ const FeaturedPropertyCard = () => {
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 items-start sm:items-center justify-between mt-6">
           <div>
             <p className="text-xl sm:text-2xl font-bold text-[#586167]">
-              $4380.00
+              ${item.price}.00
             </p>
             <p className="text-sm sm:text-md font-semibold mt-2 text-[#8A9094]">
               Home for sale
@@ -81,7 +79,7 @@ const FeaturedPropertyCard = () => {
           </div>
 
           <Link
-            to="/signup"
+            to={`all-property/${item._id}`}
             className="
               flex items-center space-x-1 
               px-4 py-2 

@@ -4,20 +4,25 @@ import "swiper/css/navigation";
 import { Keyboard, Navigation } from "swiper/modules";
 import FeaturedPropertyCard from "./FeaturedPropertyCard";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import useProperties from "../../../../hooks/useProperties";
 
 const FeaturedProperty = () => {
+  const filter = { isFeatured: true };
+  const { data: featuredProperty } = useProperties(filter);
+
   return (
     <div className="relative w-full py-20 sm:py-28 bg-white flex items-center my-8">
-
       {/* Gray side background */}
-      <div className="
+      <div
+        className="
         absolute top-0 left-0 
         hidden sm:block 
         sm:w-1/3 
         lg:w-[35%] 
         
         h-full bg-gray-200
-      "></div>
+      "
+      ></div>
 
       {/* Custom Navigation Buttons */}
       <div
@@ -47,17 +52,19 @@ const FeaturedProperty = () => {
         }}
         modules={[Keyboard, Navigation]}
         breakpoints={{
-          0: { slidesPerView: 1 },        // Mobile
-          640: { slidesPerView: 1},    // Small tablet
-          768: { slidesPerView: 1 },      // Tablet
-          1024: { slidesPerView: 1},   // Laptop
-          1280: { slidesPerView: 1},     // Desktop
+          0: { slidesPerView: 1 }, // Mobile
+          640: { slidesPerView: 1 }, // Small tablet
+          768: { slidesPerView: 1 }, // Tablet
+          1024: { slidesPerView: 1 }, // Laptop
+          1280: { slidesPerView: 1 }, // Desktop
         }}
         className="mySwiper container mx-auto px-4"
       >
-        <SwiperSlide><FeaturedPropertyCard /></SwiperSlide>
-        <SwiperSlide><FeaturedPropertyCard /></SwiperSlide>
-        <SwiperSlide><FeaturedPropertyCard /></SwiperSlide>
+        {featuredProperty?.map((item) => (
+          <SwiperSlide key={item._id}>
+            <FeaturedPropertyCard item={item} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

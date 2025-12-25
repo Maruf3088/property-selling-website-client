@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import usePropertyById from "../../../../../hooks/userPropertyById";
+import usePropertyById from "../../../../../hooks/usePropertyById";
 
 const LocationTab = () => {
   const { id } = useParams();

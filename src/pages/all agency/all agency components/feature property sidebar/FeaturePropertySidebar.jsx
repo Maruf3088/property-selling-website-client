@@ -1,4 +1,5 @@
 import React from "react";
+import RecentlyAddedSection from "../../../all property/all property components/recently added property/RecentlyAddedSection";
 
 const FeaturePropertySidebar = () => {
   return (
@@ -41,33 +42,7 @@ const FeaturePropertySidebar = () => {
         </div>
       </div>
 
-      {/* ⭐ Featured Properties */}
-      <div className="bg-white shadow-xl rounded-xl p-4">
-        <h2 className="font-semibold text-lg mb-4">Featured Properties</h2>
-
-        <div className="space-y-4">
-          {[1, 2, 3].map((item) => (
-            <div
-              key={item}
-              className="flex gap-3 border-b last:border-b-0 pb-3 last:pb-0"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=400"
-                alt="property"
-                className="w-20 h-16 object-cover rounded-lg"
-              />
-
-              <div>
-                <h3 className="text-sm font-semibold leading-tight">
-                  Modern Family Home
-                </h3>
-                <p className="text-xs text-gray-500">New York, USA</p>
-                <p className="text-sm font-bold text-orange-500">$450,000</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <RecentlyAddedSection></RecentlyAddedSection>
 
       {/* 📞 Contact Agent */}
       <div className="bg-white shadow-xl rounded-xl p-4">

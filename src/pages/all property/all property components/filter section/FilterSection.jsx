@@ -1,132 +1,157 @@
-import { Slider } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { RiResetLeftFill } from "react-icons/ri";
+import usePropertyTypes from "../../../../hooks/usePropertyTypes";
 
-const FilterSection = () => {
-  const [priceRange, setPriceRange] = useState([2401, 6536]);
-  const [areaRange, setAreaRange] = useState([1200, 2500]);
+const FilterSection = ({ filter, setFilter }) => {
+  const { data: types } = usePropertyTypes();
 
-  const handlePriceRangeChange = (event, newValue) => {
-    setPriceRange(newValue);
+  const handleReset = () => {
+    setFilter({
+      propertyStatus: "",
+      propertyType: "",
+      beds: "",
+      maxRooms: "",
+      baths: "",
+      belcony: "",
+      minPrice: "",
+      maxPrice: "",
+      minArea: "",
+      maxArea: "",
+    });
   };
-  const handleAreaRangeChange = (event, newValue) => {
-    setAreaRange(newValue);
+
+  const handleFilterChange = (key, value) => {
+    setFilter((prev) => ({ ...prev, [key]: value }));
   };
+
   return (
-    <div className="mt-3">
-      <h1 className="text-gray-600 font-semibold text-xl">Filter</h1>
-      <div className="bg-orange-500 w-[30px] h-0.5 rounded-full"></div>
-      <form className="flex flex-col gap-4 my-4">
-        <div>
-          <select defaultValue="" className="select">
-            <option value={""} disabled={true}>
-              Property status
-            </option>
-            <option>Crimson</option>
-            <option>Amber</option>
-            <option>Velvet</option>
+    <div className="mt-3 p-3 bg-white rounded-xl ">
+      <h1 className="text-gray-700 font-bold text-2xl mb-3">Advanced Filter</h1>
+      <div className="w-16 h-1 bg-orange-500 rounded-full mb-6"></div>
+
+      <form className="flex flex-col gap-6">
+        {/* Property Status & Type */}
+        <div className="flex flex-col gap-2">
+          <select
+            onChange={(e) => handleFilterChange("propertyStatus", e.target.value)}
+            value={filter.propertyStatus}
+            className="input input-bordered w-full"
+          >
+            <option value="">Property Status</option>
+            <option>For Sale</option>
+            <option>For Rent</option>
           </select>
-        </div>
-        <div>
-          <select defaultValue="" className="select">
-            <option value={""} disabled={true}>
-              Property type
-            </option>
-            <option>Crimson</option>
-            <option>Amber</option>
-            <option>Velvet</option>
-          </select>
-        </div>
-        <div className="flex gap-2">
-          <select defaultValue="" className="select">
-            <option value={""} disabled={true}>
-              Max rooms
-            </option>
-            <option>Crimson</option>
-            <option>Amber</option>
-            <option>Velvet</option>
-          </select>
-          <select defaultValue="" className="select">
-            <option value={""} disabled={true}>
-              Bed
-            </option>
-            <option>Crimson</option>
-            <option>Amber</option>
-            <option>Velvet</option>
-          </select>
-        </div>
-        <div className="flex gap-2">
-          <select defaultValue="" className="select">
-            <option value={""} disabled={true}>
-              Bath
-            </option>
-            <option>Crimson</option>
-            <option>Amber</option>
-            <option>Velvet</option>
-          </select>
-          <select defaultValue="" className="select">
-            <option value={""} disabled={true}>
-              Belcony
-            </option>
-            <option>Crimson</option>
-            <option>Amber</option>
-            <option>Velvet</option>
+
+          <select
+            onChange={(e) => handleFilterChange("propertyType", e.target.value)}
+            value={filter.propertyType}
+            className="input input-bordered w-full"
+          >
+            <option value="">Property Type</option>
+            {types?.map((type, index) => (
+              <option key={index}>{type}</option>
+            ))}
           </select>
         </div>
 
-        <div className="mt-8">
-          <h1 className="text-gray-600 font-semibold">
-            Price : $2,401.00 - $6,536.00
-          </h1>
-          <Slider
-            value={priceRange}
-            onChange={handlePriceRangeChange}
-            min={0}
-            max={10000}
-            valueLabelDisplay="auto"
-            sx={{
-              color: "orange", // <-- main slider color
-              "& .MuiSlider-thumb": {
-                backgroundColor: "#F54A00",
-              },
-              "& .MuiSlider-track": {
-                backgroundColor: "#F54A00",
-              },
-              "& .MuiSlider-rail": {
-                backgroundColor: "#ffcc80", // light orange
-              },
-            }}
-          />
-        </div>
-        <div>
-          <h1 className="text-gray-600 font-semibold">
-            Area : 1000 - 3000 sq ft
-          </h1>
-          <Slider
-            value={areaRange}
-            onChange={handleAreaRangeChange}
-            min={1000}
-            max={3000}
-            valueLabelDisplay="auto"
-            sx={{
-              color: "orange", // <-- main slider color
-              "& .MuiSlider-thumb": {
-                backgroundColor: "#F54A00",
-              },
-              "& .MuiSlider-track": {
-                backgroundColor: "#F54A00",
-              },
-              "& .MuiSlider-rail": {
-                backgroundColor: "#ffcc80", // light orange
-              },
-            }}
-          />
+        {/* Details Section */}
+        <div className="border-t border-gray-200 pt-4">
+          <h2 className="text-gray-600 font-semibold text-lg mb-3">Details</h2>
+          <div className="flex gap-2 mb-2">
+            <input
+              type="number"
+              placeholder="Beds"
+              value={filter.beds || ""}
+              onChange={(e) => handleFilterChange("beds", e.target.value)}
+              className="input input-bordered w-1/2"
+              min={0}
+            />
+            <input
+              type="number"
+              placeholder="Max Rooms"
+              value={filter.maxRooms || ""}
+              onChange={(e) => handleFilterChange("maxRooms", e.target.value)}
+              className="input input-bordered w-1/2"
+              min={0}
+            />
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="number"
+              placeholder="Baths"
+              value={filter.baths || ""}
+              onChange={(e) => handleFilterChange("baths", e.target.value)}
+              className="input input-bordered w-1/2"
+              min={0}
+            />
+            <input
+              type="number"
+              placeholder="Balcony"
+              value={filter.belcony || ""}
+              onChange={(e) => handleFilterChange("belcony", e.target.value)}
+              className="input input-bordered w-1/2"
+              min={0}
+            />
+          </div>
         </div>
 
-        <button className="flex self-start items-center space-x-1 px-4 py-2 bg-orange-600 text-white font-medium rounded-lg hover:bg-white hover:text-orange-600 outline active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg group text-sm">
-          <RiResetLeftFill />
-          <span>Reset</span>
-        </button>
+        {/* Price Section */}
+        <div className="border-t border-gray-200 pt-4">
+          <h2 className="text-gray-600 font-semibold text-lg mb-3">Price</h2>
+          <div className="flex gap-2">
+            <input
+              type="number"
+              placeholder="Min Price"
+              value={filter.minPrice || ""}
+              onChange={(e) => handleFilterChange("minPrice", e.target.value)}
+              className="input input-bordered w-1/2"
+              min={0}
+            />
+            <input
+              type="number"
+              placeholder="Max Price"
+              value={filter.maxPrice || ""}
+              onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
+              className="input input-bordered w-1/2"
+              min={0}
+            />
+          </div>
+        </div>
+
+        {/* Area Section */}
+        <div className="border-t border-gray-200 pt-4">
+          <h2 className="text-gray-600 font-semibold text-lg mb-3">Area (sq ft)</h2>
+          <div className="flex gap-2">
+            <input
+              type="number"
+              placeholder="Min Area"
+              value={filter.minArea || ""}
+              onChange={(e) => handleFilterChange("minArea", e.target.value)}
+              className="input input-bordered w-1/2"
+              min={0}
+            />
+            <input
+              type="number"
+              placeholder="Max Area"
+              value={filter.maxArea || ""}
+              onChange={(e) => handleFilterChange("maxArea", e.target.value)}
+              className="input input-bordered w-1/2"
+              min={0}
+            />
+          </div>
+        </div>
+
+        {/* Reset Button */}
+        <div className="border-t border-gray-200 pt-4 flex justify-end">
+          <button
+            type="button"
+            onClick={handleReset}
+            className="flex w-full btn items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-white hover:text-orange-600 border border-orange-600 transition-all"
+          >
+            <RiResetLeftFill />
+            Reset Filters
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -6,8 +6,13 @@ import { FaFacebook, FaInstagram, FaLink, FaLinkedin } from "react-icons/fa6";
 import AgencyPropertyListing from "../agency property listing/AgencyPropertyListing";
 import FilterSection from "../../../all property/all property components/filter section/FilterSection";
 import SidebarContent from "../drawer content/SidebarContent";
+import { useParams } from "react-router-dom";
 
 const AgencyInfo = () => {
+
+const {id}=useParams();
+
+
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="grid grid-cols-1 lg:grid-cols-8 items-start gap-2">
@@ -104,11 +109,11 @@ const AgencyInfo = () => {
                 htmlFor="agency-drawer"
                 className="drawer-overlay"
               ></label>
-              <SidebarContent />
+              {/* <SidebarContent /> */}
             </div>
           </div>
 
-          <AgencyPropertyListing />
+          {/* <AgencyPropertyListing /> */}
         </div>
 
         {/* ================= Desktop Sidebar ================= */}
@@ -177,7 +182,7 @@ const AgencyInfo = () => {
           </div>
 
           <div className="bg-white p-3 mt-5 rounded-lg">
-            <FilterSection />
+            {/* <FilterSection /> */}
           </div>
         </div>
       </div>

@@ -29,7 +29,7 @@ const PropertyInfo = ({ property }) => {
               {propertyStatus}
             </p>
           </div>
-          <p className="uppercase tracking-[4px] font-semibold text-lg mb-4 text-gray-600">
+          <p className="uppercase tracking-[4px] font-semibold text-lg mb-4 mt-4 text-gray-600">
             {location.country}
           </p>
 

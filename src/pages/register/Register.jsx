@@ -71,6 +71,7 @@ const Register = () => {
       const { password, confirmPassword, privacy, username, ...userData } =
         finalData;
       userData.createdAt = new Date().toISOString();
+      userData.logInWithGoogle = false;
 
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
 
@@ -106,6 +107,7 @@ const Register = () => {
         photo: loggedInUser.photoURL,
         name: loggedInUser.displayName,
         email: loggedInUser.email,
+        logInWithGoogle: true,
       };
 
       const { data } = await axios.post(
@@ -115,7 +117,7 @@ const Register = () => {
       console.log(data);
     } catch (error) {
       console.error(error);
-      toast.error(error.message || "Google login failed!");
+     
     }
   };
 

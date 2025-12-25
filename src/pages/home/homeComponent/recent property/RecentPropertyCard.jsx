@@ -4,15 +4,16 @@ import { IoHomeOutline } from "react-icons/io5";
 import { MdOutlineBathroom, MdOutlineBed } from "react-icons/md";
 import { RiLandscapeAiLine } from "react-icons/ri";
 import recent1 from "../../../../assets/recent1.jpg";
+import { Link } from "react-router-dom";
 
-const RecentPropertyCard = () => {
+const RecentPropertyCard = ({item}) => {
   return (
     <div className="card bg-base-100 w-full shadow-md rounded-lg overflow-hidden group">
       
       {/* Image + Hover Overlay */}
       <figure className="relative">
         <img
-          src={recent1}
+          src={item.thumbnail}
           alt="Property"
           className="w-full h-56 sm:h-64 md:h-72 lg:h-80 object-cover"
         />
@@ -32,10 +33,10 @@ const RecentPropertyCard = () => {
             <p className="text-sm text-gray-600 font-medium my-2">
               This home provides huge space to live peacefully with your family
             </p>
-            <button className="text-base font-semibold text-red-500 flex items-center gap-1 sm:gap-2">
+            <Link to={`all-property/${item._id}`} className="text-base font-semibold text-red-500 flex items-center gap-1 sm:gap-2">
               View Details 
               <IoIosArrowRoundForward className="text-2xl" />
-            </button>
+            </Link>
           </div>
         </div>
       </figure>
@@ -48,7 +49,7 @@ const RecentPropertyCard = () => {
           bg-red-500 px-3 py-1 text-lg sm:text-xl font-semibold text-white 
           rounded-md absolute -top-4 left-1/2 -translate-x-1/2
         ">
-          $1800.00
+          ${item.price}.00
         </div>
 
         {/* Top Row */}
@@ -57,7 +58,7 @@ const RecentPropertyCard = () => {
             <div className="bg-[#FDEEEC] text-orange-500 rounded-full p-2">
               <IoHomeOutline size={18} />
             </div>
-            <p className="text-xs sm:text-sm font-medium">Virtual office</p>
+            <p className="text-xs sm:text-sm font-medium">{item.propertyType}</p>
           </div>
 
           <div className="w-px h-6 bg-gray-300"></div>
@@ -66,7 +67,7 @@ const RecentPropertyCard = () => {
             <div className="bg-[#FDEEEC] text-orange-500 rounded-full p-2">
               <RiLandscapeAiLine size={18} />
             </div>
-            <p className="text-xs sm:text-sm font-medium">1000 sq ft</p>
+            <p className="text-xs sm:text-sm font-medium">{item.details.area} sq ft</p>
           </div>
         </div>
 
@@ -76,7 +77,7 @@ const RecentPropertyCard = () => {
             <div className="bg-[#FDEEEC] text-orange-500 rounded-full p-2">
               <MdOutlineBed size={18} />
             </div>
-            <p className="text-xs sm:text-sm font-medium">2 bedrooms</p>
+            <p className="text-xs sm:text-sm font-medium">{item.details.beds} bedrooms</p>
           </div>
 
           <div className="w-px h-6 bg-gray-300"></div>
@@ -85,7 +86,7 @@ const RecentPropertyCard = () => {
             <div className="bg-[#FDEEEC] text-orange-500 rounded-full p-2">
               <MdOutlineBathroom size={18} />
             </div>
-            <p className="text-xs sm:text-sm font-medium">2 bathrooms</p>
+            <p className="text-xs sm:text-sm font-medium">{item.details.baths} bathrooms</p>
           </div>
         </div>
 

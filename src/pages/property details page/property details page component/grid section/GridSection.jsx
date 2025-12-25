@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import ReviewSection from "../review section/ReviewSection";
 import RelatedPropertySection from "../related property section/RelatedPropertySection";
 
-const GridSection = () => {
+const GridSection = ({ property }) => {
   return (
    <div className="container mx-auto py-8">
   <div className="grid grid-cols-1 lg:grid-cols-7 gap-6">
@@ -17,7 +17,7 @@ const GridSection = () => {
     <div className="col-span-1 lg:col-span-5 space-y-8">
       <TabSection />
       <ReviewSection />
-      <RelatedPropertySection />
+      <RelatedPropertySection property={property}/>
       <div className="h-10"></div> {/* Extra space to allow scroll */}
     </div>
 

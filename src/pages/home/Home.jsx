@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Hero from './homeComponent/hero/Hero';
 import LatestProperty from './homeComponent/latest property/LatestProperty';
@@ -11,10 +11,24 @@ import Newsletter from './homeComponent/newsletter section/Newsletter';
 import OurAgent from './homeComponent/our agent/OurAgent';
 
 const Home = () => {
+   const [filter, setFilter] = useState({
+      propertyStatus: "",
+      propertyType: "",
+      beds: "",
+      maxRooms: "",
+      baths: "",
+      belcony: "",
+      minPrice: "",
+      maxPrice: "",
+      minArea: "",
+      maxArea: "",
+    });
+  
+
     return (
         <div>
          
-          <Hero></Hero>
+          <Hero filter={filter} setFilter={setFilter}></Hero>
           <LatestProperty></LatestProperty>
           <FeaturedProperty></FeaturedProperty>
           <PropertyService></PropertyService>

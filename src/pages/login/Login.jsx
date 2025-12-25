@@ -33,15 +33,29 @@ const Login = () => {
     }
   };
 
-  const handleSignInWIthGoogle = () => {
-    signInWithGoogle()
-      .then(() => {
-        navigate(location?.state?.from || "/");
-        toast.success("Login successful via Google!");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const handleSignInWIthGoogle =async () => {
+   try{
+    const result = await signInWithGoogle();
+    const loggedInUser = result.user;
+    toast.success("Login successful via Google!");
+    navigate(location?.state?.from || "/");
+
+      // Send user data to backend
+      const finalUserData = {
+        role, // e.g., "buyer" or "seller"
+        createdAt: new Date().toISOString(),
+        photo: loggedInUser.photoURL,
+        name: loggedInUser.displayName,
+        email: loggedInUser.email,
+        logInWithGoogle: true,
+      };
+
+
+
+   }catch(error){
+    console.error(error);
+    toast.error(error.message);
+   }
   };
 
   return (
