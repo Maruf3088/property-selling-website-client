@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import useAllProperties from "../../../hooks/useAllProperties";
-import { approveProperty, deleteProperty, pendingProperty, rejectProperty } from "../../../api/properties.api";
+import {
+  approveProperty,
+  deleteProperty,
+  pendingProperty,
+  rejectProperty,
+} from "../../../api/properties.api";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import PropertyDetailsModal from "../../../component/propert details modal/PropertyDetailsModal";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -35,31 +41,26 @@ const PropertyRequest = () => {
     setCurrentPage(1);
   }, [approvedProperties.length]);
 
- const handleDelete = (id) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "This property will be permanently deleted!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-    confirmButtonText: "Yes, delete it!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      deleteProperty(id).then((res) => {
-        if (res.data.deletedCount > 0) {
-          Swal.fire(
-            "Deleted!",
-            "Property deleted successfully.",
-            "success"
-          );
-          refetch();
-        }
-      });
-    }
-  });
-};
-
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This property will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteProperty(id).then((res) => {
+          if (res.data.deletedCount > 0) {
+            Swal.fire("Deleted!", "Property deleted successfully.", "success");
+            refetch();
+          }
+        });
+      }
+    });
+  };
 
   const handleStatusChange = (id, status) => {
     console.log("Property:", id, "Status:", status);
@@ -78,8 +79,7 @@ const PropertyRequest = () => {
           refetch();
         }
       });
-    }
-    else if (status === "pending") {
+    } else if (status === "pending") {
       pendingProperty(id).then((res) => {
         if (res.data.modifiedCount > 0) {
           toast.success("Property marked as pending");
@@ -138,12 +138,18 @@ const PropertyRequest = () => {
                       <td className="font-semibold">$ {property.price}</td>
                       <td>
                         <div className="flex gap-2 justify-center">
-                          <Link to={`/all-property/${property._id}`} className="btn btn-xs btn-info">
+                          <Link
+                            to={`/all-property/${property._id}`}
+                            className="btn btn-xs btn-info"
+                          >
                             Details
                           </Link>
-                          <button className="btn btn-xs btn-warning">
+                          <Link
+                            to={`/dashboard/updateProperty/${property._id}`}
+                            className="btn btn-xs btn-warning"
+                          >
                             Update
-                          </button>
+                          </Link>
                           <button
                             onClick={() => handleDelete(property._id)}
                             className="btn btn-xs btn-error"
@@ -212,6 +218,7 @@ const PropertyRequest = () => {
                   <th>Type</th>
                   <th>Location</th>
                   <th>Price</th>
+                  <th>Action</th>
                   <th className="text-center">Status</th>
                 </tr>
               </thead>
@@ -228,6 +235,32 @@ const PropertyRequest = () => {
                     </td>
                     <td>{property.location?.city}</td>
                     <td className="font-semibold">$ {property.price}</td>
+                    <td>
+                      <button
+                        className="btn btn-xs btn-success"
+                        onClick={() =>
+                          document
+                            .getElementById(`modal_${property._id}`)
+                            .showModal()
+                        }
+                      >
+                        Details
+                      </button>
+
+                      <dialog
+                        id={`modal_${property._id}`}
+                        className="modal modal-bottom sm:modal-middle"
+                      >
+                        <div className="modal-box">
+                          <PropertyDetailsModal id={property._id} />
+                          <div className="modal-action">
+                            <form method="dialog">
+                              <button className="btn">Close</button>
+                            </form>
+                          </div>
+                        </div>
+                      </dialog>
+                    </td>
                     <td className="text-center">
                       <select
                         className="select select-bordered select-sm"

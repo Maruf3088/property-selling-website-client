@@ -88,9 +88,9 @@ const ManageProperty = () => {
                     <Link to={`/all-property/${property._id}`} className="btn btn-xs btn-info">
                       Details
                     </Link>
-                    <button className="btn btn-xs btn-warning">
+                    <Link to={`/dashboard/updateProperty/${property._id}`} className="btn btn-xs btn-warning">
                       Update
-                    </button>
+                    </Link>
                     <button
                       onClick={() => handleDelete(property._id)}
                       className="btn btn-xs btn-error"

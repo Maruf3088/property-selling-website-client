@@ -17,6 +17,7 @@ import SellerManageProperty from "../pages/dashboard/dashboard component/SellerM
 import BuyerFavourites from "../pages/dashboard/dashboard component/BuyerFavourites";
 import AdminRoute from "./AdminRoute";
 import PropertyRequest from "../pages/dashboard/dashboard component/PropertyRequest";
+import UpdatePropertyDetails from "../pages/dashboard/dashboard component/UpdatePropertyDetails";
 
 const router = createBrowserRouter([
   {
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
       {
         path:'/dashboard/property-requests',
         element:<AdminRoute><PropertyRequest></PropertyRequest></AdminRoute>
+      },
+      {
+        path:'/dashboard/updateProperty/:id',
+        element:<UpdatePropertyDetails></UpdatePropertyDetails>,
       }
     ],
   },

@@ -1,13 +1,97 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { usePropertyByEmail } from "../../../hooks/usePropertyByEmail";
+import { Link } from "react-router-dom";
+import PropertyDetailsModal from "../../../component/propert details modal/PropertyDetailsModal";
 
-const ITEMS_PER_PAGE = 5;
+const PropertyTable = ({ title, data, statusColor }) => {
+  return (
+    <div className="mb-10">
+      <h3 className="text-xl font-semibold mb-3">
+        {title} ({data.length})
+      </h3>
+
+      {data.length === 0 ? (
+        <p className="text-gray-500">No properties found</p>
+      ) : (
+        <div className="overflow-x-auto rounded-lg shadow">
+          <table className="table table-zebra">
+            <thead className="bg-base-200">
+              <tr>
+                <th>SL</th>
+                <th>Property Name</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th className="text-center">Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {data.map((property, index) => (
+                <tr key={property._id}>
+                  <td>{index + 1}</td>
+                  <td className="font-medium">{property.propertyName}</td>
+                  <td>
+                    <span className="badge badge-info badge-outline">
+                      {property.propertyType}
+                    </span>
+                  </td>
+                  <td>
+                    {property.location?.city}, {property.location?.area}
+                  </td>
+                  <td className="font-semibold">$ {property.price}</td>
+                  <td>
+                    <span className={`badge ${statusColor}`}>
+                      {property.isAdminAproved}
+                    </span>
+                  </td>
+                  <td>
+                    <div className="flex gap-2 justify-center">
+                      {/* Open the modal using document.getElementById('ID').showModal() method */}
+                      <button
+                        className="btn btn-xs btn-success"
+                        onClick={() =>
+                          document
+                            .getElementById(`modal_${property._id}`)
+                            .showModal()
+                        }
+                      >
+                        Details
+                      </button>
+
+                      <dialog
+                        id={`modal_${property._id}`}
+                        className="modal modal-bottom sm:modal-middle"
+                      >
+                        <div className="modal-box">
+                          <PropertyDetailsModal id={property._id} />
+                          <div className="modal-action">
+                            <form method="dialog">
+                              <button className="btn">Close</button>
+                            </form>
+                          </div>
+                        </div>
+                      </dialog>
+
+                      <button className="btn btn-xs btn-warning">Update</button>
+                      <button className="btn btn-xs btn-error">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const SellerManageProperty = () => {
   const { user } = useContext(AuthContext);
   const email = user?.email;
-  const [currentPage, setCurrentPage] = useState(1);
 
   const {
     data: properties = [],
@@ -15,20 +99,15 @@ const SellerManageProperty = () => {
     isError,
   } = usePropertyByEmail(email, { enabled: !!email });
 
-  const totalPages = Math.ceil(properties.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentData = properties.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
+  const approvedProperties = properties.filter(
+    (p) => p.isAdminAproved === "approved"
   );
-
-  const handleUpdate = (id) => {
-    console.log("Update:", id);
-  };
-
-  const handleDelete = (id) => {
-    console.log("Delete:", id);
-  };
+  const pendingProperties = properties.filter(
+    (p) => p.isAdminAproved === "pending"
+  );
+  const rejectedProperties = properties.filter(
+    (p) => p.isAdminAproved === "rejected"
+  );
 
   if (isLoading) {
     return (
@@ -40,110 +119,33 @@ const SellerManageProperty = () => {
 
   if (isError) {
     return (
-      <p className="text-center text-error mt-10">
-        Failed to load properties
-      </p>
+      <p className="text-center text-error mt-10">Failed to load properties</p>
     );
   }
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">
+      <h2 className="text-2xl font-bold mb-6">
         My Properties ({properties.length})
       </h2>
 
-      <div className="overflow-x-auto rounded-lg shadow">
-        <table className="table table-zebra">
-          <thead className="bg-base-200">
-            <tr>
-              <th>SL</th>
-              <th>Property Name</th>
-              <th>Type</th>
-              <th>Location</th>
-              <th>Price</th>
-              <th className="text-center">Action</th>
-            </tr>
-          </thead>
+      <PropertyTable
+        title="Approved Properties"
+        data={approvedProperties}
+        statusColor="badge-success"
+      />
 
-          <tbody>
-            {currentData.map((property, index) => (
-              <tr key={property._id}>
-                <td>{startIndex + index + 1}</td>
-                <td className="font-medium">{property.propertyName}
-                </td>
-                <td>
-                  <span className="badge badge-info badge-outline">
-                    {property.propertyType}
-                  </span>
-                </td>
-                <td>
-                  {property.location?.city},{" "}
-                  {property.location?.area}
-                </td>
-                <td className="font-semibold">
-                  $ {property.price}
-                </td>
-                <td>
-                  <div className="flex gap-2 justify-center">
-                      <button
-                      className="btn btn-xs btn-success"
-                      onClick={() => handleDelete(property._id)}
-                    >
-                      Details
-                    </button>
-                    <button
-                      className="btn btn-xs btn-warning"
-                      onClick={() => handleUpdate(property._id)}
-                    >
-                      Update
-                    </button>
-                    <button
-                      className="btn btn-xs btn-error"
-                      onClick={() => handleDelete(property._id)}
-                    >
-                      Delete
-                    </button>
-                  
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <PropertyTable
+        title="Pending Properties"
+        data={pendingProperties}
+        statusColor="badge-warning"
+      />
 
-      {/* Pagination */}
-      <div className="flex justify-center mt-6">
-        <div className="join">
-          <button
-            className="join-item btn btn-sm"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(currentPage - 1)}
-          >
-            «
-          </button>
-
-          {[...Array(totalPages).keys()].map((page) => (
-            <button
-              key={page}
-              className={`join-item btn btn-sm ${
-                currentPage === page + 1 ? "btn-active" : ""
-              }`}
-              onClick={() => setCurrentPage(page + 1)}
-            >
-              {page + 1}
-            </button>
-          ))}
-
-          <button
-            className="join-item btn btn-sm"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(currentPage + 1)}
-          >
-            »
-          </button>
-        </div>
-      </div>
+      <PropertyTable
+        title="Rejected Properties"
+        data={rejectedProperties}
+        statusColor="badge-error"
+      />
     </div>
   );
 };

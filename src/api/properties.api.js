@@ -1,4 +1,4 @@
-import axiosPublic from "../axios/axiosPublic";
+
 import axiosSecure from "../axios/axiosSecure";
 
 
@@ -13,29 +13,29 @@ export const fetchAllProperties = () => {
 }
 
 export const fetchPropertyById = (id) => {
-  return axiosPublic.get(`/allProperties/${id}`);
+  return axiosSecure.get(`/allProperties/${id}`);
 };
 
 export const fetchPropertyType = () => {
-  return axiosPublic.get("/properties/types");
+  return axiosSecure.get("/properties/types");
 };
 
 export const fetchPropertyByEmail = async (email) => {
-  return axiosPublic.get(`/allProperties/user/${email}`);
+  return axiosSecure.get(`/allProperties/user/${email}`);
 }
 
 export const addProperty = async (propertyData) => {
-  return axiosPublic.post(`/properties`, propertyData);
+  return axiosSecure.post(`/properties`, propertyData);
 };
 
 export const getFavourites = (email) =>
- {return  axiosPublic.get(`/favourites?email=${email}`)};
+ {return  axiosSecure.get(`/favourites?email=${email}`)};
 
 export const addInFavourite = (data) =>
-  {return axiosPublic.post("/favourites", data)};
+  {return axiosSecure.post("/favourites", data)};
 
 export const deleteFromFavourite = (data) =>
-  {return axiosPublic.delete("/favourites", { data })};
+  {return axiosSecure.delete("/favourites", { data })};
 
 export const approveProperty = (id) => {
   return axiosSecure.patch(`/properties/approve/${id}`);

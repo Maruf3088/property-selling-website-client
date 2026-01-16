@@ -19,12 +19,12 @@ const Navbar = () => {
   const { data: favourites = [] } = useFavourites(user?.email);
   const { data: isAdmin } = useAdmin(user?.email);
   const rule = isAdmin?.admin ? "admin" : "user";
-  if(isAdmin){
+  if(isAdmin?.admin){
     localStorage.setItem("role", "admin");
   }
   else
   {
-    localStorage.setItem("role", "user");
+    localStorage.setItem("role", "buyer");
   }
 
   // Filter out false values if user doesn't exist
