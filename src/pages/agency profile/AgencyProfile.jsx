@@ -1,8 +1,23 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import bannerImage from "../../assets/agency-profile-bg.jpg";
 import Breadcumb from "../../component/breadcrumb/Breadcumb";
 import AgencyInfo from "./agency profile components/agency info/AgencyInfo";
+import { fetchAgencyById } from "../../api/agency.api";
+
 const AgencyProfile = () => {
+  const { id } = useParams();
+  
+  const { data: agency, isLoading, error } = useQuery({
+    queryKey: ["agency", id],
+    queryFn: async () => {
+      const response = await fetchAgencyById(id);
+      return response.data;
+    },
+    enabled: !!id,
+  });
+
   return (
     <div className="bg-gray-50">
       <div
@@ -15,14 +30,26 @@ const AgencyProfile = () => {
         className="flex items-center "
       >
         <div className="container mx-auto px-4 lg:px-0">
-          <h1 className="text-white text-4xl font-semibold ">Agency Profile</h1>
+          <h1 className="text-white text-4xl font-semibold ">
+            {agency?.agencyName || "Agency Profile"}
+          </h1>
           <div>
             <Breadcumb></Breadcumb>
           </div>
         </div>
       </div>
       {/* agency profile content */}
-      <AgencyInfo></AgencyInfo>
+      {isLoading && (
+        <div className="container mx-auto py-8 px-4 text-center">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      )}
+      {error && (
+        <div className="container mx-auto py-8 px-4 text-center text-red-500">
+          Error loading agency. Please try again.
+        </div>
+      )}
+      {agency && <AgencyInfo agency={agency} agencyId={id}></AgencyInfo>}
     </div>
   );
 };

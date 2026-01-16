@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const Login = () => {
   const { signInUser,  signInWithGoogle } = useContext(AuthContext);
@@ -42,13 +43,20 @@ const Login = () => {
 
       // Send user data to backend
       const finalUserData = {
-        role, // e.g., "buyer" or "seller"
+        role:["buyer","seller"], // e.g., "buyer" or "seller"
         createdAt: new Date().toISOString(),
         photo: loggedInUser.photoURL,
         name: loggedInUser.displayName,
         email: loggedInUser.email,
         logInWithGoogle: true,
+        
       };
+
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users`,
+        finalUserData
+      );
+      console.log(data);
 
 
 

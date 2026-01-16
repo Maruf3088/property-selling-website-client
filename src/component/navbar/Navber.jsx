@@ -10,10 +10,22 @@ import { FaHeart } from "react-icons/fa";
 import { RiMessage2Fill } from "react-icons/ri";
 import { FiSettings, FiLogOut, FiUser, FiLayout } from "react-icons/fi";
 import toast from "react-hot-toast";
+import useFavourites from "../../hooks/useFavourites";
+import useAdmin from "../../hooks/useAdmin";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
+  const { data: favourites = [] } = useFavourites(user?.email);
+  const { data: isAdmin } = useAdmin(user?.email);
+  const rule = isAdmin?.admin ? "admin" : "user";
+  if(isAdmin){
+    localStorage.setItem("role", "admin");
+  }
+  else
+  {
+    localStorage.setItem("role", "user");
+  }
 
   // Filter out false values if user doesn't exist
   const navLinks = [
@@ -22,7 +34,6 @@ const Navbar = () => {
     { name: "Agency", href: "/all-agency" },
     { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
-    
   ];
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -100,10 +111,12 @@ const Navbar = () => {
                   className="btn btn-ghost btn-circle tooltip tooltip-bottom"
                   data-tip="Favourites"
                 >
-                  <div className="indicator">
-                    <CiHeart  size={28} />
-                    <span className="h-5 w-5 flex items-center justify-center bg-red-500 rounded-full text-white indicator-item">8</span>
-                  </div>
+                  <Link to="/dashboard/favourites" className="indicator">
+                    <CiHeart size={28} />
+                    <span className="h-5 w-5 flex items-center justify-center bg-red-500 rounded-full text-white indicator-item">
+                      {favourites.length}
+                    </span>
+                  </Link>
                 </div>
 
                 <div
@@ -112,8 +125,10 @@ const Navbar = () => {
                   data-tip="Notifications"
                 >
                   <div className="indicator">
-                    <MdNotificationsActive  size={28} />
-                    <span className="h-5 w-5 flex items-center justify-center bg-red-500 rounded-full text-white indicator-item">8</span>
+                    <MdNotificationsActive size={28} />
+                    <span className="h-5 w-5 flex items-center justify-center bg-red-500 rounded-full text-white indicator-item">
+                      8
+                    </span>
                   </div>
                 </div>
 
@@ -123,8 +138,10 @@ const Navbar = () => {
                   data-tip="Messages"
                 >
                   <div className="indicator">
-                    <RiMessage2Fill  size={25} />
-                    <span className="h-5 w-5 flex items-center justify-center bg-red-500 rounded-full text-white indicator-item">8</span>
+                    <RiMessage2Fill size={25} />
+                    <span className="h-5 w-5 flex items-center justify-center bg-red-500 rounded-full text-white indicator-item">
+                      8
+                    </span>
                   </div>
                 </div>
               </div>
@@ -158,11 +175,16 @@ const Navbar = () => {
                       <FiSettings /> Settings
                     </Link>
                   </li>
-                  <li>
-                    <Link className="flex items-center gap-2">
-                      <FiLayout /> Dashboard
-                    </Link>
-                  </li>
+                  {rule == "admin" && (
+                    <li>
+                      <Link
+                        to={"/dashboard"}
+                        className="flex items-center gap-2"
+                      >
+                        <FiLayout /> Dashboard
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <button
                       onClick={handleLogout}

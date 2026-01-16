@@ -13,7 +13,6 @@ const Register = () => {
   const { createUser, updateUser, logout, signInWithGoogle } =
     useContext(AuthContext);
 
-  const [role, setRole] = useState("buyer");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
@@ -58,7 +57,7 @@ const Register = () => {
       return;
     }
 
-    const finalData = { ...data, role, photo: imageUrl };
+    const finalData = { ...data,  photo: imageUrl };
     try {
       setLoading(true);
 
@@ -72,6 +71,7 @@ const Register = () => {
         finalData;
       userData.createdAt = new Date().toISOString();
       userData.logInWithGoogle = false;
+      userData.role = ["buyer", "seller"];
 
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
 
@@ -102,12 +102,13 @@ const Register = () => {
 
       // Send user data to backend
       const finalUserData = {
-        role, // e.g., "buyer" or "seller"
+        role:["buyer","seller"], // e.g., "buyer" or "seller"
         createdAt: new Date().toISOString(),
         photo: loggedInUser.photoURL,
         name: loggedInUser.displayName,
         email: loggedInUser.email,
         logInWithGoogle: true,
+        
       };
 
       const { data } = await axios.post(
@@ -141,27 +142,7 @@ const Register = () => {
             Create your account as a Buyer or Seller
           </p>
 
-          {/* Buyer / Seller Toggle */}
-          <div className="flex justify-center gap-4 mb-6">
-            <button
-              type="button"
-              className={`btn flex-1 ${
-                role === "buyer" ? "bg-orange-500 text-white" : "btn-outline"
-              }`}
-              onClick={() => setRole("buyer")}
-            >
-              Buyer
-            </button>
-            <button
-              type="button"
-              className={`btn flex-1 ${
-                role === "seller" ? "bg-orange-500 text-white" : "btn-outline"
-              }`}
-              onClick={() => setRole("seller")}
-            >
-              Seller
-            </button>
-          </div>
+         
 
           {/* Social Login */}
           <button

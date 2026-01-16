@@ -1,11 +1,14 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import bannerImage from "../../assets/all-agency-bg.jpg";
 import Breadcumb from "../../component/breadcrumb/Breadcumb";
 import AgencyListing from "./all agency components/agency listing/AgencyListing";
-import useProperties from "../../hooks/useProperties";
+import { fetchAgencies } from "../../api/agency.api";
+import useAgencies from "../../hooks/useAgencies";
 
 const AllAgency = () => {
-  const {data:allAgency}=useProperties();
+  const { data: allAgency, isLoading, error } = useAgencies()
+  
 
   return (
     <div className="bg-gray-50">
@@ -26,7 +29,17 @@ const AllAgency = () => {
         </div>
       </div>
       {/* agency listing */}
-      <AgencyListing allAgency={allAgency}></AgencyListing>
+      {isLoading && (
+        <div className="container mx-auto py-8 px-4 text-center">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      )}
+      {error && (
+        <div className="container mx-auto py-8 px-4 text-center text-red-500">
+          Error loading agencies. Please try again.
+        </div>
+      )}
+      {allAgency && <AgencyListing allAgency={allAgency}></AgencyListing>}
     </div>
   );
 };

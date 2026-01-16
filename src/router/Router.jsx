@@ -8,6 +8,15 @@ import AgencyProfile from "../pages/agency profile/AgencyProfile";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 import PrivateRoute from "./PrivateRoute";
+import Dashboard from "../pages/dashboard/Dashboard";
+import DashboardLayout from "../layout/DashboardLayout";
+import AddProperty from "../pages/dashboard/dashboard component/AddProperty";
+import ManageProperty from "../pages/dashboard/dashboard component/ManageProperty";
+import ManageUsers from "../pages/dashboard/dashboard component/ManageUsers";
+import SellerManageProperty from "../pages/dashboard/dashboard component/SellerManageProperty";
+import BuyerFavourites from "../pages/dashboard/dashboard component/BuyerFavourites";
+import AdminRoute from "./AdminRoute";
+import PropertyRequest from "../pages/dashboard/dashboard component/PropertyRequest";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +60,44 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register></Register>,
       },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "/dashboard",
+        element: <Dashboard></Dashboard>,
+      },
+      {
+        path: "seller/add-property",
+        element: <AddProperty></AddProperty>,
+      },
+      {
+        path: "/dashboard/manage-properties",
+        element:<ManageProperty></ManageProperty>
+      },
+      {
+        path:'/dashboard/manage-users',
+        element:<AdminRoute><ManageUsers></ManageUsers></AdminRoute>
+      },
+      {
+        path:'/dashboard/seller/manage-properties',
+        element:<SellerManageProperty></SellerManageProperty>
+      },
+      {
+        path:"/dashboard/favourites",
+        element:<BuyerFavourites></BuyerFavourites>
+      },
+      {
+        path:'/dashboard/property-requests',
+        element:<AdminRoute><PropertyRequest></PropertyRequest></AdminRoute>
+      }
     ],
   },
 ]);
