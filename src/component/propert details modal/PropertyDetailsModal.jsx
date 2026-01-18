@@ -1,11 +1,27 @@
 import React from "react";
 import usePropertyById from "../../hooks/usePropertyById";
+import useAgencyById from "../../hooks/useAgencyById";
 
-import { FaRulerCombined, FaCamera, FaDollarSign, FaBed, FaBath } from "react-icons/fa";
+import {
+  FaRulerCombined,
+  FaDollarSign,
+  FaBed,
+  FaBath,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+  FaCalendarAlt,
+  FaDoorOpen,
+  FaImages,
+} from "react-icons/fa";
 import { MdBalcony } from "react-icons/md";
 
-const PropertyDetailsModal = ({ id}) => {
+const PropertyDetailsModal = ({ id }) => {
   const { data: property } = usePropertyById(id);
+
+  const { data: agencyData } = useAgencyById(property?.agencyId, {
+    enabled: !!property?.agencyId,
+  });
 
   if (!property) return null;
 
@@ -15,126 +31,194 @@ const PropertyDetailsModal = ({ id}) => {
     propertyStatus,
     price,
     thumbnail,
-    details,
-    amenities,
-    images,
+    details = {},
+    amenities = [],
+    images = [],
     description,
-    agent,
+    agent = {},
     isAdminAproved,
-    location,
+    location = {},
   } = property;
 
+  const phone =
+    typeof agent?.phone === "object"
+      ? agent.phone?.$numberLong
+      : agent?.phone;
+
   return (
-    <div className="flex items-center justify-center  ">
-      <div className="bg-white w-full max-w-5xl rounded-xl  animate-fade-in">
-        {/* Header */}
-        <div className="">
-          <img
-            src={thumbnail}
-            alt={propertyName}
-            className="w-full h-64 object-cover"
-          />
-          <span className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-lg font-semibold">
-            {propertyStatus}
-          </span>
+    <div className="w-full max-w-6xl mx-auto bg-white rounded-2xl overflow-hidden">
+      {/* Hero */}
+      <div className="relative h-80">
+        <img
+          src={thumbnail}
+          alt={propertyName}
+          className="w-full h-full object-cover"
+        />
+
+        <div className="absolute inset-0 bg-black/20" />
+
+        <div className="absolute top-6 left-6 right-6 flex justify-between">
+          <div className="flex gap-3">
+            <span className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+              {propertyType}
+            </span>
+            <span className="bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+              {propertyStatus}
+            </span>
+          </div>
+
           <span
-            className={`absolute top-4 right-4 px-3 py-1 rounded-lg font-semibold ${
+            className={`px-4 py-2 rounded-full text-sm font-bold text-white ${
               isAdminAproved === "approved"
                 ? "bg-green-600"
                 : isAdminAproved === "pending"
                 ? "bg-yellow-500"
                 : "bg-red-600"
-            } text-white`}
+            }`}
           >
-            {isAdminAproved}
+            {isAdminAproved.toUpperCase()}
           </span>
-          
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-8 space-y-10">
+        {/* Header */}
+        <div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">
+            {propertyName}
+          </h2>
+          <div className="flex items-center gap-2 text-gray-600 text-sm">
+            <FaMapMarkerAlt className="text-orange-500" />
+            {location.address}, {location.area}, {location.city}
+          </div>
         </div>
 
-        {/* Main Content */}
-        <div className="p-6">
-          <h2 className="text-2xl font-bold mb-2">{propertyName}</h2>
-          <p className="text-gray-500 mb-4">{propertyType}</p>
-          <p className="text-gray-700 mb-4 flex items-center gap-1">
-            <FaDollarSign /> Price: ${price.toLocaleString()}
+        {/* Price */}
+        <div className="flex justify-between items-center bg-orange-50 p-6 rounded-xl border-l-4 border-orange-500">
+          <span className="text-gray-600 font-semibold">Price</span>
+          <span className="text-3xl font-bold text-orange-600 flex items-center gap-2">
+            <FaDollarSign /> {price?.toLocaleString()}
+          </span>
+        </div>
+
+        {/* Key Info */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <Info icon={<FaBed />} label="Bedrooms" value={details.beds} />
+          <Info icon={<FaBath />} label="Bathrooms" value={details.baths} />
+          <Info icon={<MdBalcony />} label="Balconies" value={details.belcony} />
+          <Info
+            icon={<FaRulerCombined />}
+            label="Area"
+            value={`${details.area || "N/A"} sqft`}
+          />
+          <Info
+            icon={<FaDoorOpen />}
+            label="Rooms"
+            value={details.totalRoom}
+          />
+          <Info
+            icon={<FaCalendarAlt />}
+            label="Built"
+            value={details.buildYear}
+          />
+        </div>
+
+        {/* Description */}
+        <section>
+          <h3 className="text-xl font-bold mb-3">About this property</h3>
+          <p className="text-gray-700 leading-relaxed bg-gray-50 p-5 rounded-lg">
+            {description}
           </p>
+        </section>
 
-          {/* Location */}
-          <p className="text-gray-700 mb-4">
-            <span className="font-semibold">Location:</span> {location.address},{" "}
-            {location.area}, {location.city}, {location.country} ({location.zip_code})
-          </p>
-
-          {/* Details */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-gray-700">
-            <div className="flex items-center gap-2">
-              <FaBed /> Beds: {details.beds}
-            </div>
-            <div className="flex items-center gap-2">
-              <FaBath /> Baths: {details.baths}
-            </div>
-            <div className="flex items-center gap-2">
-              <MdBalcony /> Balcony: {details.belcony}
-            </div>
-            <div className="flex items-center gap-2">
-              <FaRulerCombined /> Area: {details.area} sqft
-            </div>
-            <div className="flex items-center gap-2">
-              <FaCamera /> Rooms: {details.totalRoom}
-            </div>
-            <div className="flex items-center gap-2">Built: {details.buildYear}</div>
-          </div>
-
-          {/* Description */}
-          <p className="text-gray-700 mb-4">{description}</p>
-
-          {/* Amenities */}
-          <div className="mb-4">
-            <h4 className="font-semibold mb-2">Amenities:</h4>
-            <div className="flex flex-wrap gap-2">
-              {amenities.map((amenity, idx) => (
+        {/* Amenities */}
+        {amenities.length > 0 && (
+          <section>
+            <h3 className="text-xl font-bold mb-3">Amenities</h3>
+            <div className="flex flex-wrap gap-3">
+              {amenities.map((a, i) => (
                 <span
-                  key={idx}
-                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+                  key={i}
+                  className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold"
                 >
-                  {amenity}
+                  ✓ {a}
                 </span>
               ))}
             </div>
-          </div>
+          </section>
+        )}
 
-          {/* Image Gallery */}
-          <div className="mb-4">
-            <h4 className="font-semibold mb-2">Gallery:</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {images.map((img, idx) => (
+        {/* Gallery */}
+        {images.length > 0 && (
+          <section>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+              <FaImages /> Gallery
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {images.map((img, i) => (
                 <img
-                  key={idx}
+                  key={i}
                   src={img}
-                  alt={`Property image ${idx + 1}`}
-                  className="w-full h-32 object-cover rounded-lg"
+                  alt={`Property ${i + 1}`}
+                  className="h-40 w-full object-cover rounded-lg cursor-pointer hover:scale-105 transition"
                 />
               ))}
             </div>
-          </div>
+          </section>
+        )}
 
-          {/* Agent Info */}
-          <div className="flex items-center gap-4 mt-6 p-4 bg-gray-50 rounded-lg">
+        {/* Agent */}
+        <section className="bg-blue-50 p-6 rounded-xl">
+          <h3 className="text-xl font-bold mb-4">Contact Agent</h3>
+          <div className="flex gap-6 items-center">
             <img
               src={agent.photoUrl}
               alt={agent.name}
-              className="w-16 h-16 rounded-full object-cover"
+              className="w-20 h-20 rounded-full object-cover"
             />
             <div>
-              <p className="font-semibold">{agent.name}</p>
-              <p className="text-gray-500 text-sm">{agent.email}</p>
-              <p className="text-gray-500 text-sm">+{agent.phone}</p>
+              <p className="font-bold text-lg">{agent.name}</p>
+              <p className="flex items-center gap-2 text-gray-700">
+                <FaEnvelope /> {agent.email}
+              </p>
+              <p className="flex items-center gap-2 text-gray-700">
+                <FaPhone /> +{phone}
+              </p>
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* Agency */}
+        {agencyData && (
+          <section className="bg-orange-50 p-6 rounded-xl">
+            <h3 className="text-xl font-bold mb-4">Agency</h3>
+            <div className="flex gap-6 items-center">
+              <img
+                src={agencyData.logoUrl}
+                alt={agencyData.agencyName}
+                className="w-20 h-20 rounded-lg object-cover"
+              />
+              <div>
+                <p className="font-bold text-lg">{agencyData.agencyName}</p>
+                <p className="text-gray-600">{agencyData.title}</p>
+              </div>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
 };
+
+const Info = ({ icon, label, value }) => (
+  <div className="bg-gray-50 p-4 rounded-lg flex items-center gap-3">
+    <span className="text-blue-600 text-xl">{icon}</span>
+    <div>
+      <p className="text-xs text-gray-500">{label}</p>
+      <p className="font-bold">{value || "N/A"}</p>
+    </div>
+  </div>
+);
 
 export default PropertyDetailsModal;

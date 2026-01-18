@@ -19,6 +19,7 @@ import usePropertyById from "../../../hooks/usePropertyById";
 import { AuthContext } from "../../../provider/AuthProvider";
 import axiosSecure from "../../../axios/axiosSecure";
 import toast from "react-hot-toast";
+import useAdmin from "../../../hooks/useAdmin";
 
 const amenitiesIconMap = {
   Lift: FaBuilding,
@@ -40,12 +41,21 @@ const UpdatePropertyDetails = () => {
   const id = param.id;
   const { user } = useContext(AuthContext);
   const { data: property, isLoading } = usePropertyById(id);
+  const { data: isAdmin } = useAdmin(user?.email);
+
+  const rule = isAdmin?.admin;
+  const [admin, setAdmin] = useState(false);
+  if (rule === true) {
+    if (!admin) {
+      setAdmin(true);
+    }
+  }
 
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
+
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -117,13 +127,13 @@ const UpdatePropertyDetails = () => {
       setValue("location.country", property.location?.country || "");
       setValue("location.zip_code", property.location?.zip_code || "");
       setValue("description", property.description || "");
-      setValue("agent.name", property.agent?.name || user?.displayName || "");
       setValue("agent.phone", property.agent?.phone || "");
-      setValue("agent.email", property.agent?.email || user?.email || "");
-      setValue(
-        "agent.photoUrl",
-        property.agent?.photoUrl || user?.photoURL || ""
-      );
+
+      setValue("agent.name", property.agent?.name || "");
+      setValue("agent.email", property.agent?.email || "");
+      setValue("agent.photoUrl", property.agent?.photoUrl || "");
+
+      setValue("agencyId", property.agencyId || "");
       setValue("agencyEmail", property.agencyEmail || "");
       setValue("agency.agencyName", property.agency?.agencyName || "");
       setValue("agency.location", property.agency?.location || "");
@@ -181,15 +191,16 @@ const UpdatePropertyDetails = () => {
       },
       description: data.description || "",
       agent: {
-        name: user?.displayName || data.agent.name || "",
+        name: data.agent.name || "",
         phone: data.agent.phone || "",
-        email: user?.email || data.agent.email || "",
-        photoUrl: user?.photoURL || data.agent.photoUrl || "",
+        email: data.agent.email || "",
+        photoUrl: data.agent.photoUrl || "",
       },
+      agencyId: data.agencyId || "",
       agencyEmail: data.agencyEmail || "",
       agency: data.agency || {},
       isFeatured: data.isFeatured || false,
-      updatedAt: new Date().toISOString(),
+      isAdminAproved: admin ? property?.isAdminAproved : "pending",
     };
 
     try {
@@ -461,11 +472,13 @@ const UpdatePropertyDetails = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               {...register("agent.name")}
+              readOnly
               placeholder="Agent Name"
               className="input input-bordered w-full"
             />
             <input
               type="email"
+              readOnly
               {...register("agent.email")}
               placeholder="Agent Email"
               className="input input-bordered w-full"
@@ -477,6 +490,7 @@ const UpdatePropertyDetails = () => {
               className="input input-bordered w-full"
             />
             <input
+              readOnly
               {...register("agent.photoUrl")}
               placeholder="Agent Photo URL"
               className="input input-bordered w-full"
@@ -532,7 +546,7 @@ const UpdatePropertyDetails = () => {
         <button
           type="submit"
           disabled={loading || uploading}
-          className="btn btn-primary w-full bg-gradient-to-r from-orange-400 to-orange-600 border-none text-white disabled:opacity-50"
+          className="btn btn-primary w-full bg-linear-to-r from-orange-400 to-orange-600 border-none text-white disabled:opacity-50"
         >
           {loading
             ? "Updating Property..."

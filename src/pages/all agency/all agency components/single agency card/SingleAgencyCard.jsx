@@ -1,35 +1,16 @@
-import React, { useEffect, useState } from "react";
+
 import { CiLocationOn, CiMail, CiPhone } from "react-icons/ci";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import axiosPublic from "../../../../axios/axiosPublic";
-const SingleAgencyCard = ({ item }) => {
-  const [count, setCount] = useState(0);
 
+import usePropertyCountByAgency from "../../../../hooks/usePropertyCountByAgency";
+const SingleAgencyCard = ({ item }) => {
   // Handle both direct agency objects and nested agency in properties
   const agency = item.agency || item;
   const agencyName = agency?.agencyName;
 
-  useEffect(() => {
-    if (!item._id && !agencyName) return;
+  const { data: count = 0 } = usePropertyCountByAgency(item._id);
 
-    const fetchCount = async () => {
-      try {
-        // Try agencyId first (for direct agency objects), then fallback to agencyName
-        const queryParam = item._id 
-          ? `agencyId=${item._id}` 
-          : `agencyName=${agencyName}`;
-        const res = await axiosPublic.get(
-          `/properties/countProperty?${queryParam}`
-        );
-        setCount(res.data.count);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchCount();
-  }, [item._id, agencyName]);
   return (
     <div className="card bg-base-100 shadow-sm group hover:shadow-xl transition-all duration-300 rounded-lg">
       <figure className="h-[200px] w-full">
@@ -46,7 +27,10 @@ const SingleAgencyCard = ({ item }) => {
       </figure>
       <div className="card-body">
         <div>
-          <Link to={`/all-agency/${item._id}`} className="card-title text-2xl group-hover:text-orange-500 transition-all duration-300 ">
+          <Link
+            to={`/all-agency/${item._id}`}
+            className="card-title text-2xl group-hover:text-orange-500 transition-all duration-300 "
+          >
             {agencyName || "Agency Name"}
           </Link>
           <p className=" text-gray-700 text-md ">{agency?.title || ""}</p>

@@ -18,6 +18,10 @@ import BuyerFavourites from "../pages/dashboard/dashboard component/BuyerFavouri
 import AdminRoute from "./AdminRoute";
 import PropertyRequest from "../pages/dashboard/dashboard component/PropertyRequest";
 import UpdatePropertyDetails from "../pages/dashboard/dashboard component/UpdatePropertyDetails";
+import ManageAgencies from "../pages/dashboard/dashboard component/ManageAgencies";
+import BuyerAppointment from "../pages/dashboard/dashboard component/BuyerAppointment";
+import AppointmentRequest from "../pages/dashboard/dashboard component/AppointmentRequest";
+import AppointmentCandidates from "../pages/dashboard/dashboard component/AppointmentCandidates";
 
 const router = createBrowserRouter([
   {
@@ -102,6 +106,22 @@ const router = createBrowserRouter([
       {
         path:'/dashboard/updateProperty/:id',
         element:<UpdatePropertyDetails></UpdatePropertyDetails>,
+      },
+      {
+        path:'/dashboard/manage-agencies',
+        element:<AdminRoute><ManageAgencies></ManageAgencies></AdminRoute>
+      },
+      {
+        path:'/dashboard/buyer/appointments',
+        element:<BuyerAppointment></BuyerAppointment>
+      },
+      {
+        path:'/dashboard/seller/manage-appointments',
+        element:<AppointmentRequest></AppointmentRequest>
+      },
+      {
+        path:'/dashboard/property-appointments/:id',
+        element:<AppointmentCandidates></AppointmentCandidates>
       }
     ],
   },

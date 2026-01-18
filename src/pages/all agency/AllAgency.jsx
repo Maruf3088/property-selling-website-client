@@ -1,9 +1,9 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+
 import bannerImage from "../../assets/all-agency-bg.jpg";
 import Breadcumb from "../../component/breadcrumb/Breadcumb";
 import AgencyListing from "./all agency components/agency listing/AgencyListing";
-import { fetchAgencies } from "../../api/agency.api";
+
 import useAgencies from "../../hooks/useAgencies";
 
 const AllAgency = () => {

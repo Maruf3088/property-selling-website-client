@@ -1,4 +1,3 @@
-
 import axiosSecure from "../axios/axiosSecure";
 
 export const addAgency = async (agencyData) => {
@@ -11,4 +10,8 @@ export const fetchAgencies = async () => {
 
 export const fetchAgencyById = (id) => {
   return axiosSecure.get(`/agencies/${id}`);
+};
+
+export const deleteAgency = (id) => {
+  return axiosSecure.delete(`/agencies/${id}`);
 };

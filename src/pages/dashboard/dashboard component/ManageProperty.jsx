@@ -3,11 +3,12 @@ import useProperties from "../../../hooks/useProperties";
 import { Link } from "react-router-dom";
 import { deleteProperty } from "../../../api/properties.api";
 import Swal from "sweetalert2";
+import PropertyDetailsModal from "../../../component/propert details modal/PropertyDetailsModal";
 
 const ITEMS_PER_PAGE = 5;
 
 const ManageProperty = () => {
-  const { data: allProperties = [], isLoading , refetch} = useProperties();
+  const { data: allProperties = [], isLoading, refetch } = useProperties();
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(allProperties.length / ITEMS_PER_PAGE);
@@ -31,11 +32,7 @@ const ManageProperty = () => {
       if (result.isConfirmed) {
         deleteProperty(id).then((res) => {
           if (res.data.deletedCount > 0) {
-            Swal.fire(
-              "Deleted!",
-              "Property deleted successfully.",
-              "success"
-            );
+            Swal.fire("Deleted!", "Property deleted successfully.", "success");
             refetch();
           }
         });
@@ -85,10 +82,36 @@ const ManageProperty = () => {
                 <td className="font-semibold">$ {property.price}</td>
                 <td>
                   <div className="flex gap-2 justify-center">
-                    <Link to={`/all-property/${property._id}`} className="btn btn-xs btn-info">
+                    {/* Open the modal using document.getElementById('ID').showModal() method */}
+                    <button
+                      className="btn btn-xs btn-success"
+                      onClick={() =>
+                        document
+                          .getElementById(`modal_${property._id}`)
+                          .showModal()
+                      }
+                    >
                       Details
-                    </Link>
-                    <Link to={`/dashboard/updateProperty/${property._id}`} className="btn btn-xs btn-warning">
+                    </button>
+
+                    <dialog
+                      id={`modal_${property._id}`}
+                      className="modal modal-bottom sm:modal-middle"
+                    >
+                      <div className="modal-box">
+                        <PropertyDetailsModal id={property._id} />
+                        <div className="modal-action">
+                          <form method="dialog">
+                            <button className="btn">Close</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
+
+                    <Link
+                      to={`/dashboard/updateProperty/${property._id}`}
+                      className="btn btn-xs btn-warning"
+                    >
                       Update
                     </Link>
                     <button

@@ -1,19 +1,10 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import SinglePropertyCard from "../../../all property/all property components/single property card/SinglePropertyCard";
-import axiosPublic from "../../../../axios/axiosPublic";
+import usePropertyByAgencyId from "../../../../hooks/usePropertyByAgencyId";
 
 const AgencyPropertyListing = ({ agencyId }) => {
-  const { data: properties, isLoading, error } = useQuery({
-    queryKey: ["agency-properties", agencyId],
-    queryFn: async () => {
-      const response = await axiosPublic.get("/allProperties", {
-        params: { agencyId },
-      });
-      return response.data;
-    },
-    enabled: !!agencyId,
-  });
+  const { data: properties, isLoading, error } = usePropertyByAgencyId(agencyId);
+    
 
   if (isLoading) {
     return (

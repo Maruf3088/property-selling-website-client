@@ -1,22 +1,16 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+
 import bannerImage from "../../assets/agency-profile-bg.jpg";
 import Breadcumb from "../../component/breadcrumb/Breadcumb";
 import AgencyInfo from "./agency profile components/agency info/AgencyInfo";
-import { fetchAgencyById } from "../../api/agency.api";
+
+import useAgencyById from "../../hooks/useAgencyById";
 
 const AgencyProfile = () => {
   const { id } = useParams();
   
-  const { data: agency, isLoading, error } = useQuery({
-    queryKey: ["agency", id],
-    queryFn: async () => {
-      const response = await fetchAgencyById(id);
-      return response.data;
-    },
-    enabled: !!id,
-  });
+  const { data: agency, isLoading, error } = useAgencyById(id)
 
   return (
     <div className="bg-gray-50">

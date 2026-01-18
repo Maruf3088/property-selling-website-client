@@ -1,6 +1,5 @@
-
 import { NavLink } from "react-router-dom";
-import logo from '../../../assets/logo.png'
+import logo from "../../../assets/logo.png";
 import {
   FaHome,
   FaBuilding,
@@ -21,10 +20,7 @@ import {
 import { AuthContext } from "../../../provider/AuthProvider";
 
 const DashboardSidebar = () => {
-
-const role =localStorage.getItem("role");
-
-
+  const role = localStorage.getItem("role");
 
   const linkBase =
     "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300";
@@ -63,8 +59,9 @@ const role =localStorage.getItem("role");
               <FaHeart /> Favourites
             </NavLink>
 
-            <NavLink to="/dashboard/appointments" className={navClass}>
-              <FaCalendarCheck />My Appointments
+            <NavLink to="/dashboard/buyer/appointments" className={navClass}>
+              <FaCalendarCheck />
+              My Appointments
             </NavLink>
           </>
         )}
@@ -75,11 +72,17 @@ const role =localStorage.getItem("role");
               <FaPlusCircle /> Add Property
             </NavLink>
 
-            <NavLink to="/dashboard/seller/manage-properties" className={navClass}>
+            <NavLink
+              to="/dashboard/seller/manage-properties"
+              className={navClass}
+            >
               <FaBuilding /> Manage Properties
             </NavLink>
 
-            <NavLink to="/dashboard/seller/manage-appointments" className={navClass}>
+            <NavLink
+              to="/dashboard/seller/manage-appointments"
+              className={navClass}
+            >
               <FaCalendarCheck /> Appointments Request
             </NavLink>
           </>
@@ -102,7 +105,9 @@ const role =localStorage.getItem("role");
             <NavLink to="/dashboard/property-requests" className={navClass}>
               <FaClipboardList /> Property Requests
             </NavLink>
-
+            <NavLink to="/dashboard/manage-agencies" className={navClass}>
+              <FaBuilding /> Manage Agencies
+            </NavLink>
             <NavLink to="/dashboard/seller/add-property" className={navClass}>
               <FaPlusCircle /> Add Property
             </NavLink>

@@ -64,7 +64,7 @@ const PropertyRequest = () => {
 
   const handleStatusChange = (id, status) => {
     console.log("Property:", id, "Status:", status);
-    // TODO: PATCH API → update isAdminAproved / status
+
     if (status === "approved") {
       approveProperty(id).then((res) => {
         if (res.data.modifiedCount > 0) {
@@ -138,12 +138,32 @@ const PropertyRequest = () => {
                       <td className="font-semibold">$ {property.price}</td>
                       <td>
                         <div className="flex gap-2 justify-center">
-                          <Link
-                            to={`/all-property/${property._id}`}
-                            className="btn btn-xs btn-info"
+                          {/* Open the modal using document.getElementById('ID').showModal() method */}
+                          <button
+                            className="btn btn-xs btn-success"
+                            onClick={() =>
+                              document
+                                .getElementById(`modal_${property._id}`)
+                                .showModal()
+                            }
                           >
                             Details
-                          </Link>
+                          </button>
+
+                          <dialog
+                            id={`modal_${property._id}`}
+                            className="modal modal-bottom sm:modal-middle"
+                          >
+                            <div className="modal-box">
+                              <PropertyDetailsModal id={property._id} />
+                              <div className="modal-action">
+                                <form method="dialog">
+                                  <button className="btn">Close</button>
+                                </form>
+                              </div>
+                            </div>
+                          </dialog>
+
                           <Link
                             to={`/dashboard/updateProperty/${property._id}`}
                             className="btn btn-xs btn-warning"

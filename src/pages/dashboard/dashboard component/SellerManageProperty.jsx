@@ -3,8 +3,10 @@ import { AuthContext } from "../../../provider/AuthProvider";
 import { usePropertyByEmail } from "../../../hooks/usePropertyByEmail";
 import { Link } from "react-router-dom";
 import PropertyDetailsModal from "../../../component/propert details modal/PropertyDetailsModal";
+import Swal from "sweetalert2";
+import { deleteProperty } from "../../../api/properties.api";
 
-const PropertyTable = ({ title, data, statusColor }) => {
+const PropertyTable = ({ title, data, statusColor, onDelete }) => {
   return (
     <div className="mb-10">
       <h3 className="text-xl font-semibold mb-3">
@@ -75,8 +77,18 @@ const PropertyTable = ({ title, data, statusColor }) => {
                         </div>
                       </dialog>
 
-                      <button className="btn btn-xs btn-warning">Update</button>
-                      <button className="btn btn-xs btn-error">Delete</button>
+                      <Link
+                        to={`/dashboard/updateProperty/${property._id}`}
+                        className="btn btn-xs btn-warning"
+                      >
+                        Update
+                      </Link>
+                      <button
+                        onClick={() => onDelete(property._id)}
+                        className="btn btn-xs btn-error"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -96,8 +108,30 @@ const SellerManageProperty = () => {
   const {
     data: properties = [],
     isLoading,
+    refetch,
     isError,
   } = usePropertyByEmail(email, { enabled: !!email });
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This property will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteProperty(id).then((res) => {
+          if (res.data.deletedCount > 0) {
+            Swal.fire("Deleted!", "Property deleted successfully.", "success");
+            refetch();
+          }
+        });
+      }
+    });
+  };
 
   const approvedProperties = properties.filter(
     (p) => p.isAdminAproved === "approved"
@@ -133,18 +167,21 @@ const SellerManageProperty = () => {
         title="Approved Properties"
         data={approvedProperties}
         statusColor="badge-success"
+        onDelete={handleDelete}
       />
 
       <PropertyTable
         title="Pending Properties"
         data={pendingProperties}
         statusColor="badge-warning"
+        onDelete={handleDelete}
       />
 
       <PropertyTable
         title="Rejected Properties"
         data={rejectedProperties}
         statusColor="badge-error"
+        onDelete={handleDelete}
       />
     </div>
   );

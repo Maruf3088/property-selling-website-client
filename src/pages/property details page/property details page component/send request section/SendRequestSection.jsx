@@ -1,4 +1,5 @@
 import React from "react";
+import Swal from 'sweetalert2'
 import { BsSend } from "react-icons/bs";
 import {
   FaEnvelope,
@@ -17,17 +18,72 @@ import {
   MdAccessTime,
 } from "react-icons/md";
 import { useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import usePropertyById from "../../../../hooks/usePropertyById";
+import { useContext } from "react";
+import { AuthContext } from "../../../../provider/AuthProvider";
+
+import { addAppointment } from "../../../../api/appointment.api";
 
 const SendRequestSection = () => {
   const { id } = useParams();
   const { data: property } = usePropertyById(id);
+  const { user } = useContext(AuthContext);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    const appointmentData = {
+      propertyId: id,
+      agentEmail: property?.agent?.email,
+      status: "pending",
+      agentMessage: "",
+      propertyName : property?.propertyName,
+      propertyStatus : property?.propertyStatus,
+      propertyImage: property?.thumbnail,
+      ...data,
+    };
+
+    console.log("Appointment Data:", appointmentData);
+    const result = addAppointment(appointmentData);
+    result.then((res) => {
+      
+      if (res.data.insertedId) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Your appointment request has been sent!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      if(res.data.exists){
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          title: "You have already requested an appointment for this property.",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    });
+
+    // 👉 send to backend here
+    // axios.post("/appointments", appointmentData)
+
+    reset();
+  };
 
   return (
     <section className="md:bg-gray-50 py-8 rounded-xl">
       <div className="max-w-6xl mx-auto px-4 space-y-12">
-        {/* ---- Title & Subtitle ---- */}
-        <div className=" space-y-2">
+        {/* ---- Title ---- */}
+        <div className="space-y-2">
           <h2 className="text-3xl font-bold text-gray-800">
             Contact <span className="text-orange-600">Property Agent</span>
           </h2>
@@ -37,7 +93,7 @@ const SendRequestSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-1 gap-10 items-start">
+        <div className="grid md:grid-cols-1 gap-10">
           {/* ---- Agent Info ---- */}
           <div className="bg-white p-8 rounded-xl shadow-lg space-y-6">
             <h3 className="text-2xl font-semibold text-gray-800">
@@ -45,7 +101,7 @@ const SendRequestSection = () => {
             </h3>
             <p className="text-gray-500">Senior Real Estate Agent</p>
 
-            <div className="space-y-3 mt-4">
+            <div className="space-y-3">
               <div className="flex items-center gap-3 text-gray-600">
                 <FaEnvelope className="text-orange-600" />
                 <span>{property?.agent?.email}</span>
@@ -56,34 +112,14 @@ const SendRequestSection = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 mt-4">
-              <a
-                href="#"
-                className="text-white bg-blue-600 p-2 rounded-full hover:bg-blue-700 transition"
-              >
-                <FaFacebookF />
-              </a>
-              <a
-                href="#"
-                className="text-white bg-blue-400 p-2 rounded-full hover:bg-blue-500 transition"
-              >
-                <FaTwitter />
-              </a>
-              <a
-                href="#"
-                className="text-white bg-blue-700 p-2 rounded-full hover:bg-blue-800 transition"
-              >
-                <FaLinkedinIn />
-              </a>
-              <a
-                href="#"
-                className="text-white bg-green-500 p-2 rounded-full hover:bg-green-600 transition"
-              >
-                <FaWhatsapp />
-              </a>
+            <div className="flex gap-4">
+              <FaFacebookF className="text-white bg-blue-600 p-2 rounded-full" />
+              <FaTwitter className="text-white bg-blue-400 p-2 rounded-full" />
+              <FaLinkedinIn className="text-white bg-blue-700 p-2 rounded-full" />
+              <FaWhatsapp className="text-white bg-green-500 p-2 rounded-full" />
             </div>
 
-            <button className="mt-6 w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2">
+            <button className="w-full bg-orange-600 text-white py-3 rounded-lg flex items-center justify-center gap-2">
               <IoChatbubbleEllipsesOutline size={20} />
               Chat with Agent
             </button>
@@ -95,83 +131,91 @@ const SendRequestSection = () => {
               Book an Appointment
             </h3>
 
-            <form className="space-y-4">
-              <div className="flex flex-col">
-                <label className="flex items-center gap-2 text-gray-700 font-medium">
-                  <MdPerson className="text-orange-600 text-xl" /> Name
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              {/* Name */}
+              <div>
+                <label className="flex items-center gap-2 font-medium">
+                  <MdPerson className="text-orange-600" /> Name
                 </label>
                 <input
-                  type="text"
+                  value={user?.displayName}
+                  readOnly
+                  {...register("buyerName", { required: "Name is required" })}
+                  className="w-full mt-1 p-3 border rounded-lg"
                   placeholder="Your Name"
-                  className="mt-1 p-3 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                  required
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-sm">{errors.name.message}</p>
+                )}
               </div>
 
-              <div className="flex flex-col">
-                <label className="flex items-center gap-2 text-gray-700 font-medium">
-                  <MdEmail className="text-orange-600 text-xl" /> Email
+              {/* Email */}
+              <div>
+                <label className="flex items-center gap-2 font-medium">
+                  <MdEmail className="text-orange-600" /> Email
                 </label>
                 <input
+                  value={user?.email}
+                  readOnly
                   type="email"
+                  {...register("buyerEmail", { required: "Email is required" })}
+                  className="w-full mt-1 p-3 border rounded-lg"
                   placeholder="Your Email"
-                  className="mt-1 p-3 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                  required
                 />
               </div>
 
-              <div className="flex flex-col">
-                <label className="flex items-center gap-2 text-gray-700 font-medium">
-                  <MdPhone className="text-orange-600 text-xl" /> Phone
+              {/* Phone */}
+              <div>
+                <label className="flex items-center gap-2 font-medium">
+                  <MdPhone className="text-orange-600" /> Phone
                 </label>
                 <input
-                  type="tel"
+                  {...register("buyerPhone", { required: "Phone is required" })}
+                  className="w-full mt-1 p-3 border rounded-lg"
                   placeholder="Your Phone"
-                  className="mt-1 p-3 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                  required
                 />
               </div>
 
-              <div className="flex flex-col">
-                <label className="flex items-center gap-2 text-gray-700 font-medium">
-                  <MdDateRange className="text-orange-600 text-xl" />{" "}
-                  Appointment Date
+              {/* Date */}
+              <div>
+                <label className="flex items-center gap-2 font-medium">
+                  <MdDateRange className="text-orange-600" /> Appointment Date
                 </label>
                 <input
                   type="date"
-                  className="mt-1 p-3 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                  required
+                  {...register("date", { required: true })}
+                  className="w-full mt-1 p-3 border rounded-lg"
                 />
               </div>
 
-              <div className="flex flex-col">
-                <label className="flex items-center gap-2 text-gray-700 font-medium">
-                  <MdAccessTime className="text-orange-600 text-xl" />{" "}
-                  Appointment Time
+              {/* Time */}
+              <div>
+                <label className="flex items-center gap-2 font-medium">
+                  <MdAccessTime className="text-orange-600" /> Appointment Time
                 </label>
                 <input
                   type="time"
-                  className="mt-1 p-3 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                  required
+                  {...register("time", { required: true })}
+                  className="w-full mt-1 p-3 border rounded-lg"
                 />
               </div>
 
-              <div className="flex flex-col">
-                <label className="text-gray-700 font-medium">
-                  Additional Request
-                </label>
+              {/* Message */}
+              <div>
+                <label className="font-medium">Additional Request</label>
                 <textarea
-                  placeholder="Your message or requirements..."
-                  className="mt-1 p-3 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
+                  {...register("buyerMessage")}
                   rows={4}
-                ></textarea>
+                  className="w-full mt-1 p-3 border rounded-lg resize-none"
+                  placeholder="Your message..."
+                />
               </div>
 
               <button
                 type="submit"
-                className="mt-4 w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2"
+                className="w-full bg-orange-600 text-white py-3 rounded-lg flex items-center justify-center gap-2"
               >
-                <BsSend size={17} />
+                <BsSend />
                 Submit Request
               </button>
             </form>
