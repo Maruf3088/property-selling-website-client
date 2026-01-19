@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import bannerImage from "../../assets/agency-profile-bg.jpg";
@@ -11,6 +11,10 @@ const AgencyProfile = () => {
   const { id } = useParams();
   
   const { data: agency, isLoading, error } = useAgencyById(id)
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="bg-gray-50">

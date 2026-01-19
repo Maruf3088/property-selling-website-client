@@ -4,12 +4,16 @@ import GridSection from "./property details page component/grid section/GridSect
 import usePropertyById from "../../hooks/usePropertyById";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
+import { useEffect } from "react";
 
 
 const PropertyDetailsPage = () => {
   const { id } = useParams();
   const { data: property, isLoading } = usePropertyById(id);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
 
   if (isLoading) {

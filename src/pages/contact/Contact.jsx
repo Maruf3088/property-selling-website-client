@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaPhone,
   FaEnvelope,
@@ -20,6 +20,10 @@ const Contact = () => {
     propertyType: "",
     message: "",
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const [submitted, setSubmitted] = useState(false);
 

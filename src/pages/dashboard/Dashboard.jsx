@@ -18,9 +18,14 @@ import {
   FaUsers,
   FaMoneyBillWave,
 } from "react-icons/fa";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const role = localStorage.getItem("role"); // buyer | seller | admin
+
+useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   /* ================== Fake Data ================== */
   const stats = {

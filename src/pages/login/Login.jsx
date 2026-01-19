@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -18,6 +18,9 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const onSubmit = async (data) => {
     try {
