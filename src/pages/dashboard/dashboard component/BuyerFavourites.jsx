@@ -37,7 +37,7 @@ const BuyerFavourites = () => {
       }).then((res) => {
         if (res.data.deletedCount > 0) {
           Swal.fire({
-            position: "top-end",
+            position: "center",
             icon: "success",
             title: "Removed!",
             text: "Property removed from favourites.",
