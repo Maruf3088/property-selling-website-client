@@ -5,9 +5,12 @@ import usePropertyById from "../../hooks/usePropertyById";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 
+
 const PropertyDetailsPage = () => {
   const { id } = useParams();
   const { data: property, isLoading } = usePropertyById(id);
+
+  
 
   if (isLoading) {
     return (

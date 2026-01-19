@@ -35,7 +35,7 @@ const AppointmentCandidates = () => {
           agentMessage,
         };
 
-        console.log("Update payload:", appointmentId, payload);
+       
 
         updateAppointmentStatus(appointmentId, payload).then(() => {
           refetch();

@@ -90,9 +90,7 @@ const DashboardSidebar = () => {
         {/* Admin */}
         {role === "admin" && (
           <>
-            <NavLink to="/dashboard/admin" className={navClass}>
-              <FaUserShield /> Admin Dashboard
-            </NavLink>
+          
 
             <NavLink to="/dashboard/manage-users" className={navClass}>
               <FaUsers /> Manage Users

@@ -1,8 +1,13 @@
 import React from "react";
 import DashboardSidebar from "../pages/dashboard/dashboard component/DashboardSidebar";
 import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
 
 const DashboardLayout = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="min-h-screen">
       

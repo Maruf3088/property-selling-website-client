@@ -27,7 +27,7 @@ const HappyClient = () => {
         <div className="
           absolute -bottom-12 left-1/2 -translate-x-1/2 flex gap-3
           lg:left-auto sm:right-10 sm:translate-x-0
-          z-50
+          z-10
         ">
           <div className="custom-client-prev cursor-pointer text-[#FFEEEC] bg-orange-500 shadow-md p-3 rounded-md">
             <FaArrowLeft />

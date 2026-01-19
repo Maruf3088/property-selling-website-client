@@ -8,7 +8,12 @@ import {
   updateProfile,
   sendEmailVerification,
 } from "firebase/auth";
-import React, { useEffect, useState, createContext } from "react";
+import React, {
+  useEffect,
+  useState,
+  createContext,
+  useCallback,
+} from "react";
 import auth from "../firebase/firebase.init";
 import axiosPublic from "../axios/axiosPublic";
 import { setLogoutFunction } from "../axios/axiosSecure";
@@ -21,20 +26,19 @@ const AuthProvider = ({ children }) => {
   const googleAuthProvider = new GoogleAuthProvider();
 
   /* ---------- AUTH METHODS ---------- */
+
   const createUser = (email, password) => {
-    setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
-  const signInUser = async (email, password) => {
-    setLoading(true);
 
+  const signInUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
-  const signInWithGoogle = async () => {
-    setLoading(true);
 
+  const signInWithGoogle = () => {
     return signInWithPopup(auth, googleAuthProvider);
   };
+
   const updateUser = (name, photo) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
@@ -42,27 +46,31 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const emailVarification = () => {
+  const emailVerification = () => {
     return sendEmailVerification(auth.currentUser);
   };
 
-  /* ---------- LOGOUT (IMPORTANT FIX) ---------- */
-  const logout = async () => {
+  /* ---------- LOGOUT (FIXED) ---------- */
+  const logout = useCallback(async () => {
     setLoading(true);
-
     await signOut(auth);
+    localStorage.removeItem("access-token");
     setUser(null);
     setLoading(false);
-  };
+  }, []);
 
-  // Register logout function with axiosSecure on component mount
+  /* ---------- REGISTER LOGOUT FOR AXIOS ---------- */
   useEffect(() => {
     setLogoutFunction(logout);
   }, [logout]);
 
   /* ---------- AUTH STATE LISTENER ---------- */
   useEffect(() => {
+    let isMounted = true;
+
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (!isMounted) return;
+
       setLoading(true);
 
       if (currentUser) {
@@ -70,17 +78,15 @@ const AuthProvider = ({ children }) => {
           const res = await axiosPublic.post("/jwt", {
             email: currentUser.email,
           });
-          console.log(currentUser)
 
           if (res.data?.token) {
             localStorage.setItem("access-token", res.data.token);
           }
-          // Set user AFTER token is saved to prevent 401 errors
+
           setUser(currentUser);
-        } catch (err) {
-          console.error("JWT error:", err);
-          // Still set user even if JWT fetch fails
-          setUser(currentUser);
+        } catch (error) {
+          console.error("JWT fetch failed:", error);
+          setUser(currentUser); // still allow login
         }
       } else {
         localStorage.removeItem("access-token");
@@ -90,9 +96,13 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
   }, []);
 
+  /* ---------- CONTEXT VALUE ---------- */
   const authInfo = {
     user,
     loading,
@@ -100,12 +110,14 @@ const AuthProvider = ({ children }) => {
     signInUser,
     signInWithGoogle,
     updateUser,
-    emailVarification,
+    emailVerification,
     logout,
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

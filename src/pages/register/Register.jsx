@@ -41,7 +41,7 @@ const Register = () => {
         "https://api.cloudinary.com/v1_1/dunx2j1ru/image/upload",
         formData
       );
-      console.log(data)
+     
       setImageUrl(data.secure_url);
     } catch (err) {
       console.error("Cloudinary upload error:", err);
@@ -115,7 +115,7 @@ const Register = () => {
         `${import.meta.env.VITE_API_URL}/users`,
         finalUserData
       );
-      console.log(data);
+   
     } catch (error) {
       console.error(error);
      

@@ -36,7 +36,7 @@ const PropertyService = () => {
       </div>
 
       {/* Custom Navigation Buttons */}
-      <div className="absolute top-10 right-5 md:top-1/4 md:right-10 z-50 flex gap-3">
+      <div className="absolute top-10 right-5 md:top-1/4 md:right-10 z-10 flex gap-3">
         <div className="custom-service-prev cursor-pointer bg-[#FFEEEC] text-orange-500 shadow-md p-3 rounded-md">
           <FaArrowLeft />
         </div>

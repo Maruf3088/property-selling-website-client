@@ -3,8 +3,12 @@ import React from "react";
 import bannerImage from "../../assets/allPropertPageBg.jpg";
 import Breadcumb from "../../component/breadcrumb/Breadcumb";
 import PropertyListing from "./all property components/property listing/PropertyListing";
+import { useEffect } from "react";
 const AllProperty = () => {
   
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="bg-gray-50">

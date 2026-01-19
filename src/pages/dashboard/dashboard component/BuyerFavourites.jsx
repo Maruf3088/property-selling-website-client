@@ -16,7 +16,7 @@ const BuyerFavourites = () => {
     isLoading,
     refetch,
   } = useFavourites(user?.email);
-  console.log(favourites);
+
 
   const handleRemoveFavourite = async (propertyId) => {
     const result = await Swal.fire({

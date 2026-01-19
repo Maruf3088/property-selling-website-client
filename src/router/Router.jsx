@@ -22,6 +22,9 @@ import ManageAgencies from "../pages/dashboard/dashboard component/ManageAgencie
 import BuyerAppointment from "../pages/dashboard/dashboard component/BuyerAppointment";
 import AppointmentRequest from "../pages/dashboard/dashboard component/AppointmentRequest";
 import AppointmentCandidates from "../pages/dashboard/dashboard component/AppointmentCandidates";
+import Blog from "../pages/Blog/Blog";
+import Contact from "../pages/contact/Contact";
+
 
 const router = createBrowserRouter([
   {
@@ -65,6 +68,14 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register></Register>,
       },
+      {
+        path:'/blog',
+        element:<Blog></Blog>
+      },
+      {
+        path:'/contact',
+        element:<Contact></Contact>
+      }
     ],
   },
   {

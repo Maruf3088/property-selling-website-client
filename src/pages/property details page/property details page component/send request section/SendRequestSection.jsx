@@ -49,7 +49,7 @@ const SendRequestSection = () => {
       ...data,
     };
 
-    console.log("Appointment Data:", appointmentData);
+    
     const result = addAppointment(appointmentData);
     result.then((res) => {
       

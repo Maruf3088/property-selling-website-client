@@ -9,6 +9,7 @@ import SearchNowSection from './homeComponent/Search now section/SearchNowSectio
 import HappyClient from './homeComponent/happy client section/HappyClient';
 import Newsletter from './homeComponent/newsletter section/Newsletter';
 import OurAgent from './homeComponent/our agent/OurAgent';
+import { useEffect } from 'react';
 
 const Home = () => {
    const [filter, setFilter] = useState({
@@ -23,7 +24,9 @@ const Home = () => {
       minArea: "",
       maxArea: "",
     });
-  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
     return (
         <div>

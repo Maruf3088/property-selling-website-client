@@ -5,10 +5,13 @@ import Breadcumb from "../../component/breadcrumb/Breadcumb";
 import AgencyListing from "./all agency components/agency listing/AgencyListing";
 
 import useAgencies from "../../hooks/useAgencies";
+import { useEffect } from "react";
 
 const AllAgency = () => {
   const { data: allAgency, isLoading, error } = useAgencies()
-  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="bg-gray-50">

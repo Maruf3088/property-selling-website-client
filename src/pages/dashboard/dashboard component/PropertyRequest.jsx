@@ -63,7 +63,7 @@ const PropertyRequest = () => {
   };
 
   const handleStatusChange = (id, status) => {
-    console.log("Property:", id, "Status:", status);
+    
 
     if (status === "approved") {
       approveProperty(id).then((res) => {

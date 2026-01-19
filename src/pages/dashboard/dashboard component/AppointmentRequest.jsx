@@ -5,7 +5,7 @@ import PropertyRow from "./PropertyRow";
 
 const AppointmentRequest = () => {
   const { user } = useContext(AuthContext);
-  const { data: sellerProperties = [] } = usePropertyByEmail(user?.email);
+  const { data: sellerProperties = [], refetch } = usePropertyByEmail(user?.email);
 
   const approvedProperties = sellerProperties.filter(
     (property) => property.isAdminAproved === "approved"
@@ -38,6 +38,7 @@ const AppointmentRequest = () => {
                 <PropertyRow
                   key={property._id}
                   property={property}
+                    refetch={refetch}
                 />
               ))}
             </tbody>

@@ -1,45 +1,68 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { useForm } from "react-hook-form";
 import { BsSend } from "react-icons/bs";
+import { AuthContext } from "../../../../provider/AuthProvider";
+import { addReview } from "../../../../api/reviews.api";
+import toast from "react-hot-toast";
+import useReviewsByPropertyId from "../../../../hooks/useReviewsByPropertyId";
+import { format } from "date-fns";
 
-const ReviewSection = () => {
-  const [rating, setRating] = useState(0); // default rating
+const ReviewSection = ({ property }) => {
+  const { register, handleSubmit, setValue, reset } = useForm();
+  const [rating, setRating] = useState(0);
+  const { user } = useContext(AuthContext);
+  const { data: reviewsByPropertyId = [] , refetch} = useReviewsByPropertyId(
+    property?._id,
+  );
 
   const handleRatingChange = (value) => {
     setRating(value);
+    setValue("rating", value); // sync with RHF
   };
-  // Mock Data
-  const reviews = [
-    {
-      id: 1,
-      name: "Sarah Jenkins",
-      image:
-        "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
-      rating: 5,
-      date: "2 weeks ago",
-      comment:
-        "Absolutely thrilled with my new home! The buying process was smooth, and the team was incredibly transparent. Highly recommended for anyone looking for luxury properties.",
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      image:
-        "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
-      rating: 4,
-      date: "1 month ago",
-      comment:
-        "Great service and very professional agents. I found a beautiful apartment within my budget. The only downside was the paperwork took a bit longer than expected.",
-    },
-    {
-      id: 3,
-      name: "Jessica & Tom",
-      image:
-        "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
-      rating: 5,
-      date: "2 months ago",
-      comment:
-        "We sold our property through this platform and got a great price. The marketing team did a fantastic job showcasing our villa. 5 stars all the way!",
-    },
-  ];
+
+  const onSubmit = async (data) => {
+    // basic validation
+    if (!rating || rating === 0) {
+      return toast.error("Please select a rating ⭐");
+    }
+
+    if (!user) {
+      return toast.error("You must be logged in to submit a review");
+    }
+
+    const reviewData = {
+      comment: data.comment,
+      rating,
+      name: user.displayName,
+      email: user.email,
+      userImage: user.photoURL,
+      propertyId: property?._id,
+      propertyName: property?.propertyName,
+      propertyImage: property?.thumbnail,
+      propertyStatus: property?.propertyStatus,
+      createdAt: new Date(),
+    };
+
+    try {
+      const res = await addReview(reviewData);
+
+      if (res?.data?.insertedId) {
+        toast.success(" Review submitted successfully!");
+        reset();
+        refetch();
+        setRating(0);
+      } else {
+        toast.error(" Failed to submit review. Please try again.");
+      }
+    } catch (error) {
+      console.error("Review submission error:", error);
+      toast.error("🚨 Something went wrong. Try again later.");
+    }
+  };
+
+  // Mock Reviews (unchanged)
+  const reviews = reviewsByPropertyId;
 
   return (
     <section className="py-12 bg-white">
@@ -51,29 +74,31 @@ const ReviewSection = () => {
           </span>
         </h2>
 
-        {/* --- REVIEW LIST (YouTube Style) --- */}
+        {/* Reviews List */}
         <div className="flex flex-col gap-6 mb-12">
           {reviews.map((review) => (
-            <div key={review.id} className="flex gap-4">
-              {/* Avatar Column */}
+            <div key={review._id} className="flex gap-4">
               <div className="shrink-0">
                 <div className="avatar">
                   <div className="w-12 h-12 rounded-full">
-                    <img src={review.image} alt={review.name} />
+                    <img src={review.userImage} alt={review.name} />
                   </div>
                 </div>
               </div>
 
-              {/* Content Column */}
-              <div className="flex-col w-full">
+              <div className="w-full">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-bold text-sm text-gray-900">
-                    {review.name}
+                  <span className="font-bold text-sm">{review.name}</span>
+                  <span className="text-xs text-gray-500">
+                    {review.createdAt
+                      ? format(
+                          new Date(review.createdAt),
+                          "MMM dd, yyyy • h:mm a",
+                        )
+                      : ""}
                   </span>
-                  <span className="text-xs text-gray-500">{review.date}</span>
                 </div>
 
-                {/* Static Stars */}
                 <div className="rating rating-xs mb-2 pointer-events-none">
                   {[...Array(5)].map((_, i) => (
                     <input
@@ -88,16 +113,7 @@ const ReviewSection = () => {
                   ))}
                 </div>
 
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  {review.comment}
-                </p>
-
-                {/* Interaction icons (Optional cosmetic touch) */}
-                <div className="flex gap-4 mt-2">
-                  <button className="btn btn-ghost btn-xs text-gray-400 hover:text-orange-600 px-0">
-                    Reply
-                  </button>
-                </div>
+                <p className="text-sm text-gray-700">{review.comment}</p>
               </div>
             </div>
           ))}
@@ -105,20 +121,18 @@ const ReviewSection = () => {
 
         <div className="divider"></div>
 
-        {/* --- STYLED WRITE REVIEW FORM --- */}
+        {/* Write Review */}
         <div className="flex gap-4 mt-10">
-          {/* User Avatar */}
-          <div className="avatar placeholder hidden sm:block">
-            <div className="bg-orange-100 text-orange-600 border border-orange-200 rounded-full w-12 h-12">
-              <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="" />
+          <div className="avatar hidden sm:block">
+            <div className="w-12 h-12 rounded-full">
+              <img src={user?.photoURL} alt={user?.displayName} />
             </div>
           </div>
 
-          <form className="w-full">
-            {/* Input Container - Styled to look like a polished card */}
-            <div className="border border-gray-200 rounded-2xl bg-gray-50 focus-within:bg-white focus-within:border-orange-400 focus-within:ring-4 focus-within:ring-orange-100 transition-all duration-300 overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-white/50">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <div className="border rounded-2xl bg-gray-50 focus-within:bg-white transition overflow-hidden">
+              <div className="flex justify-between items-center px-4 py-3 border-b">
+                <span className="text-xs font-bold text-gray-400 uppercase">
                   Select Rating
                 </span>
 
@@ -127,7 +141,6 @@ const ReviewSection = () => {
                     <input
                       key={num}
                       type="radio"
-                      name="rating"
                       className="mask mask-star-2 bg-orange-500"
                       checked={rating === num}
                       onChange={() => handleRatingChange(num)}
@@ -135,34 +148,29 @@ const ReviewSection = () => {
                   ))}
                 </div>
               </div>
-              {/* Text Area */}
+
               <textarea
-                className="textarea w-full h-32 text-base bg-transparent border-none focus:outline-none focus:border-none resize-none px-4 py-3 placeholder-gray-400 text-gray-700"
+                {...register("comment", { required: true })}
+                className="textarea w-full h-32 bg-transparent border-none resize-none px-4 py-3"
                 placeholder="Share your experience with this property..."
-              ></textarea>
+              />
             </div>
 
-            {/* Bottom Actions */}
-            <div className="flex items-center justify-between mt-3">
+            {/* hidden rating field for RHF */}
+            <input type="hidden" {...register("rating")} />
+
+            <div className="flex justify-between items-center mt-3">
               <p className="text-xs text-gray-400">
                 Your review will be posted publicly.
               </p>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  className="btn btn-ghost btn-sm text-gray-500 hover:bg-gray-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-sm bg-orange-600 hover:bg-orange-700 text-white border-none shadow-md shadow-orange-200 px-6"
-                >
-                                 <BsSend size={10}/>
-                  
-                  Post Review
-                </button>
-              </div>
+
+              <button
+                type="submit"
+                className="btn btn-sm bg-orange-600 hover:bg-orange-700 text-white px-6"
+              >
+                <BsSend size={12} />
+                Post Review
+              </button>
             </div>
           </form>
         </div>

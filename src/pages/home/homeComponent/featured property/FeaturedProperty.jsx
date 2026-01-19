@@ -28,7 +28,7 @@ const FeaturedProperty = () => {
       <div
         className="
           absolute 
-          z-50 flex gap-3
+          z-10 flex gap-3
           right-4 top-4
           sm:right-10 sm:top-20 
            md:top-5
