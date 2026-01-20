@@ -5,6 +5,7 @@ import usePropertyById from "../../hooks/usePropertyById";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 import { useEffect } from "react";
+import Loading from "../../component/loading/Loading";
 
 
 const PropertyDetailsPage = () => {
@@ -17,14 +18,7 @@ const PropertyDetailsPage = () => {
   
 
   if (isLoading) {
-    return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
-        <span className="loading loading-spinner loading-xl text-orange-500"></span>
-        <p className="mt-4 text-sm text-gray-500 tracking-wide">
-          loading data...
-        </p>
-      </div>
-    );
+    return Loading();
   }
 
   return (

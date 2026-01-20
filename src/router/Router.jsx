@@ -24,6 +24,7 @@ import AppointmentRequest from "../pages/dashboard/dashboard component/Appointme
 import AppointmentCandidates from "../pages/dashboard/dashboard component/AppointmentCandidates";
 import Blog from "../pages/Blog/Blog";
 import Contact from "../pages/contact/Contact";
+import Profile from "../pages/profile/Profile";
 
 
 const router = createBrowserRouter([
@@ -75,6 +76,9 @@ const router = createBrowserRouter([
       {
         path:'/contact',
         element:<Contact></Contact>
+      },{
+        path:'/profile',
+        element:<PrivateRoute><Profile></Profile></PrivateRoute>
       }
     ],
   },

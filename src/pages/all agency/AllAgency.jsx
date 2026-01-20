@@ -6,6 +6,7 @@ import AgencyListing from "./all agency components/agency listing/AgencyListing"
 
 import useAgencies from "../../hooks/useAgencies";
 import { useEffect } from "react";
+import Loading from "../../component/loading/Loading";
 
 const AllAgency = () => {
   const { data: allAgency, isLoading, error } = useAgencies()
@@ -31,12 +32,8 @@ const AllAgency = () => {
           </div>
         </div>
       </div>
-      {/* agency listing */}
-      {isLoading && (
-        <div className="container mx-auto py-8 px-4 text-center">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      )}
+      {isLoading && <Loading />}
+
       {error && (
         <div className="container mx-auto py-8 px-4 text-center text-red-500">
           Error loading agencies. Please try again.

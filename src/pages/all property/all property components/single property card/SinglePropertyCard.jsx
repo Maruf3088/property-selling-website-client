@@ -78,7 +78,7 @@ const SinglePropertyCard = ({ property }) => {
         toast.success("Removed from favourite");
       }
 
-      refetch(); // 🔥 sync UI with DB
+      refetch(); 
     } catch (error) {
       console.error("Favourite error:", error);
       toast.error("Something went wrong");
@@ -103,10 +103,6 @@ const SinglePropertyCard = ({ property }) => {
             <CiCamera /> {views}
           </div>
 
-          {/* Compare */}
-          <div className="absolute bottom-14 right-3 bg-white p-2 text-xl rounded-lg cursor-pointer">
-            <IoIosGitCompare />
-          </div>
 
           {/* Favourite */}
           <button

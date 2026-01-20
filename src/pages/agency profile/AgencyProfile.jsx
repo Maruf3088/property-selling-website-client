@@ -6,6 +6,7 @@ import Breadcumb from "../../component/breadcrumb/Breadcumb";
 import AgencyInfo from "./agency profile components/agency info/AgencyInfo";
 
 import useAgencyById from "../../hooks/useAgencyById";
+import Loading from "../../component/loading/Loading";
 
 const AgencyProfile = () => {
   const { id } = useParams();
@@ -37,11 +38,8 @@ const AgencyProfile = () => {
         </div>
       </div>
       {/* agency profile content */}
-      {isLoading && (
-        <div className="container mx-auto py-8 px-4 text-center">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      )}
+     {isLoading && <Loading />}
+
       {error && (
         <div className="container mx-auto py-8 px-4 text-center text-red-500">
           Error loading agency. Please try again.

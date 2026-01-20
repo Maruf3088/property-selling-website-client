@@ -27,7 +27,7 @@ const RecentProperty = () => {
         absolute 
         top-10 right-5 
          sm:right-10
-        z-50 flex gap-3
+        z-10 flex gap-3
       "
       >
         <div className="custom-recent-prev cursor-pointer bg-[#FFEEEC] text-orange-500 shadow-md p-3 rounded-md">

@@ -4,14 +4,22 @@ import useProperties from "../../../../hooks/useProperties";
 const RelatedPropertySection = ({ property }) => {
   const filters = { propertyType: property.propertyType };
 
+  const { data: properties = [] } = useProperties(filters);
 
-  // Always call the hook at the top level
-  const { data: properties } = useProperties(filters);
-
-  // Filter out the current property and limit to 3
   const relatedProperties = properties
-    ?.filter((p) => p._id !== property._id)
-    .slice(0, 3) || [];
+    .filter((p) => p._id !== property._id)
+    .slice(0, 3);
+
+  // ✅ early return
+  if (relatedProperties.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500 text-lg">
+          No related properties found.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="pb-8 px-2 md:px-0">

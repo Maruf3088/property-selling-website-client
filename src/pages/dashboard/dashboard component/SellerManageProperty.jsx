@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import PropertyDetailsModal from "../../../component/propert details modal/PropertyDetailsModal";
 import Swal from "sweetalert2";
 import { deleteProperty } from "../../../api/properties.api";
+import Loading from "../../../component/loading/Loading";
 
 const PropertyTable = ({ title, data, statusColor, onDelete }) => {
   return (
@@ -143,12 +144,8 @@ const SellerManageProperty = () => {
     (p) => p.isAdminAproved === "rejected"
   );
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center mt-10">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+   if (isLoading) {
+    return Loading();
   }
 
   if (isError) {

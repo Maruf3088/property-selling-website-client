@@ -4,6 +4,7 @@ import usePropertyCountByAgency from "../../../hooks/usePropertyCountByAgency";
 import axiosSecure from "../../../axios/axiosSecure";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import Loading from "../../../component/loading/Loading";
 
 // Separate component for each agency row
 const AgencyRow = ({ agency, index, onDelete }) => {
@@ -65,11 +66,7 @@ const ManageAgencies = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center mt-10">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return Loading();
   }
 
   return (

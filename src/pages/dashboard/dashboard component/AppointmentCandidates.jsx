@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import useAppointmentCandidatesByPropertyId from "../../../hooks/useAppointmentCandidatesByPropertyId";
 import Swal from "sweetalert2";
 import { updateAppointmentStatus } from "../../../api/appointment.api";
+import Loading from "../../../component/loading/Loading";
 
 const AppointmentCandidates = () => {
   const { id: propertyId } = useParams();
@@ -52,8 +53,8 @@ const AppointmentCandidates = () => {
     });
   };
 
-  if (isLoading) {
-    return <p className="text-center text-gray-500">Loading candidates...</p>;
+   if (isLoading) {
+    return Loading();
   }
 
   return (

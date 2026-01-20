@@ -11,10 +11,11 @@ import {
   FaPhoneAlt,
 } from "react-icons/fa";
 import { deleteAppointmentById } from "../../../api/appointment.api";
+import Loading from "../../../component/loading/Loading";
 
 const BuyerAppointment = () => {
   const { user } = useContext(AuthContext);
-  const { data: buyerAppointments = [], refetch } = useAppointmentsByBuyerEmail(
+  const { data: buyerAppointments = [], refetch, isLoading } = useAppointmentsByBuyerEmail(
     user?.email,
   );
 
@@ -56,6 +57,10 @@ const BuyerAppointment = () => {
       }
     });
   };
+
+  if (isLoading) {
+    return Loading();
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

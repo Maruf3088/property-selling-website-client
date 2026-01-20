@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import PropertyDetailsModal from "../../../component/propert details modal/PropertyDetailsModal";
+import Loading from "../../../component/loading/Loading";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -89,12 +90,8 @@ const PropertyRequest = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center mt-10">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+   if (isLoading) {
+    return Loading();
   }
 
   return (
@@ -223,7 +220,7 @@ const PropertyRequest = () => {
       {/* ================= PENDING TABLE ================= */}
       <div>
         <h2 className="text-2xl font-bold mb-4">
-          Pending Properties ({pendingProperties.length})
+           Properties Request ({pendingProperties.length})
         </h2>
 
         {pendingProperties.length === 0 ? (

@@ -118,8 +118,18 @@ const Navbar = () => {
                     </span>
                   </Link>
                 </div>
+                 {rule == "admin" && (
+                    <button className="hidden md:block btn bg-orange-500 btn-soft btn-sm ml-4 text-white  " >
+                      <Link
+                        to={"/dashboard"}
+                        className="flex items-center gap-2"
+                      >
+                        <FiLayout />Admin Dashboard
+                      </Link>
+                    </button>
+                  )}
 
-                <div
+                {/* <div
                   role="button"
                   className="btn btn-ghost btn-circle tooltip tooltip-bottom"
                   data-tip="Notifications"
@@ -130,9 +140,9 @@ const Navbar = () => {
                       8
                     </span>
                   </div>
-                </div>
+                </div> */}
 
-                <div
+                {/* <div
                   role="button"
                   className="btn btn-ghost btn-circle tooltip tooltip-bottom"
                   data-tip="Messages"
@@ -143,7 +153,7 @@ const Navbar = () => {
                       8
                     </span>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               {/* Profile Dropdown */}
@@ -166,7 +176,7 @@ const Navbar = () => {
                   className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow"
                 >
                   <li>
-                    <Link className="flex items-center gap-2">
+                    <Link to={'/profile'} className="flex items-center gap-2">
                       <FiUser /> Profile
                     </Link>
                   </li>
@@ -175,16 +185,17 @@ const Navbar = () => {
                       <FiSettings /> Settings
                     </Link>
                   </li>
-                  {rule == "admin" && (
-                    <li>
+                   {rule == "admin" && (
+                    <li  >
                       <Link
                         to={"/dashboard"}
-                        className="flex items-center gap-2"
+                        className="md:hidden flex items-center gap-2"
                       >
-                        <FiLayout /> Dashboard
+                        <FiLayout />Admin Dashboard
                       </Link>
                     </li>
                   )}
+                 
                   <li>
                     <button
                       onClick={handleLogout}

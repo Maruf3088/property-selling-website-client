@@ -163,7 +163,7 @@ const Contact = () => {
             return (
               <div
                 key={idx}
-                className={`bg-gradient-to-br ${item.color} text-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2`}
+                className={`bg-linear-to-br  ${item.color} text-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2`}
               >
                 <div className="text-5xl mb-4">
                   <Icon />

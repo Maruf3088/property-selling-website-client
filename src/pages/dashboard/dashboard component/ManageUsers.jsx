@@ -3,6 +3,7 @@ import useAllUser from "../../../hooks/useAllUser";
 import { deleteUser, makeAdmin, removeAdmin } from "../../../api/user.api";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import Loading from "../../../component/loading/Loading";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -97,11 +98,7 @@ const ManageUsers = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center mt-10">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return Loading();
   }
 
   return (

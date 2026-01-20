@@ -8,6 +8,7 @@ import { FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
 
 import { deleteFromFavourite } from "../../../api/properties.api";
 import Swal from "sweetalert2";
+import Loading from "../../../component/loading/Loading";
 
 const BuyerFavourites = () => {
   const { user } = useContext(AuthContext);
@@ -50,12 +51,8 @@ const BuyerFavourites = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <span className="loading loading-spinner loading-lg text-orange-500"></span>
-      </div>
-    );
+   if (isLoading) {
+    return Loading();
   }
 
   if (favourites.length === 0) {

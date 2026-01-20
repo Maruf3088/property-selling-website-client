@@ -2,14 +2,19 @@ import React, { useContext } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { usePropertyByEmail } from "../../../hooks/usePropertyByEmail";
 import PropertyRow from "./PropertyRow";
+import Loading from "../../../component/loading/Loading";
 
 const AppointmentRequest = () => {
   const { user } = useContext(AuthContext);
-  const { data: sellerProperties = [], refetch } = usePropertyByEmail(user?.email);
+  const { data: sellerProperties = [], refetch , isLoading } = usePropertyByEmail(user?.email);
 
   const approvedProperties = sellerProperties.filter(
     (property) => property.isAdminAproved === "approved"
   );
+
+  if (isLoading) {
+    return Loading();
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

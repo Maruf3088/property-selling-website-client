@@ -6,6 +6,7 @@ import ContactInfo from "../contact info/ContactInfo";
 import RecentlyAddedSection from "../recently added property/RecentlyAddedSection";
 import useProperties from "../../../../hooks/useProperties";
 import { Drawer } from "@mui/material";
+import Loading from "../../../../component/loading/Loading";
 
 const PropertyListing = () => {
   const [filter, setFilter] = useState({
@@ -29,7 +30,7 @@ const PropertyListing = () => {
   const toggleDrawer = (open) => () => setOpenDrawer(open);
 
   const drawerContent = (
-    <div className="w-80 h-full p-4 bg-white flex flex-col gap-6 overflow-y-auto">
+    <div className=" w-80 h-full p-4 bg-white flex flex-col gap-6 overflow-y-auto">
       <h1 className="text-2xl font-bold mb-2">Advanced Filters</h1>
       <FilterSection filter={filter} setFilter={setFilter} />
       <CategoryFilterSection filter={filter} setFilter={setFilter} />
@@ -53,7 +54,7 @@ const PropertyListing = () => {
         <div className="lg:hidden col-span-1 mb-4">
           <button
             onClick={toggleDrawer(true)}
-            className="w-full py-2 rounded-full bg-orange-500 text-white shadow hover:bg-white hover:text-orange-500 transition-all font-semibold"
+            className="hidden w-full py-2 rounded-full bg-orange-500 text-white shadow hover:bg-white hover:text-orange-500 transition-all font-semibold"
           >
             Filter Properties
           </button>
@@ -65,10 +66,7 @@ const PropertyListing = () => {
         {/* Property listing section */}
         <div className="col-span-6">
           {isLoading ? (
-            <div className="w-full min-h-[50vh] flex flex-col items-center justify-center">
-              <span className="loading loading-spinner loading-xl text-orange-500"></span>
-              <p className="mt-4 text-gray-500 text-sm">Loading properties...</p>
-            </div>
+            Loading()
           ) : properties?.length === 0 ? (
             <div className="w-full min-h-[50vh] flex items-center justify-center">
               <p className="text-gray-500 text-sm">No properties found</p>

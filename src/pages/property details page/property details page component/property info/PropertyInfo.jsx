@@ -24,7 +24,7 @@ const PropertyInfo = ({ property }) => {
         {/* Left Section */}
         <div className="flex-1">
           <div className="flex flex-row items-center gap-4">
-            <h1 className="text-3xl sm:text-4xl font-bold">{propertyName}</h1>
+            <h1 className="text-2xl sm:text-4xl font-bold">{propertyName}</h1>
             <p className="bg-red-500 px-4 text-white font-semibold rounded-lg py-1 mt-2 sm:mt-0 w-max">
               {propertyStatus}
             </p>

@@ -10,10 +10,10 @@ const Hero = () => {
     navigate("/dashboard");
   };
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 pt-24 pb-32">
+    <section className="relative w-full overflow-hidden bg-linear-to-br  from-slate-950 via-slate-900 to-slate-800 pt-24 pb-32">
       {/* Decorative background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-600/10 blur-3xl" />
+        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-linear-to-br  from-amber-500/20 to-orange-600/10 blur-3xl" />
         <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-tr from-blue-500/20 to-cyan-600/10 blur-3xl" />
       </div>
 

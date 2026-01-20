@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { deleteProperty } from "../../../api/properties.api";
 import Swal from "sweetalert2";
 import PropertyDetailsModal from "../../../component/propert details modal/PropertyDetailsModal";
+import Loading from "../../../component/loading/Loading";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -40,12 +41,8 @@ const ManageProperty = () => {
     });
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center mt-10">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+   if (isLoading) {
+    return Loading();
   }
 
   return (
