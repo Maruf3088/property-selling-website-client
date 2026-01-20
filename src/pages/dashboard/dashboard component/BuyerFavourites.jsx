@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useFavourites from "../../../hooks/useFavourites";
 import { AuthContext } from "../../../provider/AuthProvider";
@@ -17,6 +17,10 @@ const BuyerFavourites = () => {
     isLoading,
     refetch,
   } = useFavourites(user?.email);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
 
   const handleRemoveFavourite = async (propertyId) => {

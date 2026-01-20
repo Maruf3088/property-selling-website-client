@@ -22,6 +22,7 @@ const PropertyTable = ({ title, data, statusColor, onDelete }) => {
             <thead className="bg-base-200">
               <tr>
                 <th>SL</th>
+                <th>Photo</th>
                 <th>Property Name</th>
                 <th>Type</th>
                 <th>Location</th>
@@ -35,6 +36,21 @@ const PropertyTable = ({ title, data, statusColor, onDelete }) => {
               {data.map((property, index) => (
                 <tr key={property._id}>
                   <td>{index + 1}</td>
+                  <td>
+                    <div className="avatar">
+                      <div className="mask mask-squircle w-12 h-12">
+                        <img
+                          src={
+                            property.thumbnail ||
+                            property.propertyImage ||
+                            "https://via.placeholder.com/48?text=No+Image"
+                          }
+                          alt={property.propertyName}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  </td>
                   <td className="font-medium">{property.propertyName}</td>
                   <td>
                     <span className="badge badge-info badge-outline">
@@ -135,16 +151,16 @@ const SellerManageProperty = () => {
   };
 
   const approvedProperties = properties.filter(
-    (p) => p.isAdminAproved === "approved"
+    (p) => p.isAdminAproved === "approved",
   );
   const pendingProperties = properties.filter(
-    (p) => p.isAdminAproved === "pending"
+    (p) => p.isAdminAproved === "pending",
   );
   const rejectedProperties = properties.filter(
-    (p) => p.isAdminAproved === "rejected"
+    (p) => p.isAdminAproved === "rejected",
   );
 
-   if (isLoading) {
+  if (isLoading) {
     return Loading();
   }
 

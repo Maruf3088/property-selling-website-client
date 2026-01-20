@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAllUser from "../../../hooks/useAllUser";
 import { deleteUser, makeAdmin, removeAdmin } from "../../../api/user.api";
 import toast from "react-hot-toast";
@@ -15,6 +15,10 @@ const ManageUsers = () => {
   const totalPages = Math.ceil(allUsers.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentUsers = allUsers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  useEffect(() => {
+  window.scrollTo(0, 0);
+  }, []);
 
   const handleToggleAdmin = async (id, isCurrentlyAdmin) => {
     try {
@@ -63,7 +67,7 @@ const ManageUsers = () => {
       }
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to update user role"
+        error.response?.data?.message || "Failed to update user role",
       );
       console.error(error);
     } finally {
@@ -111,6 +115,7 @@ const ManageUsers = () => {
           <thead className="bg-base-200">
             <tr>
               <th>SL</th>
+              <th>Photo</th>
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
@@ -124,6 +129,20 @@ const ManageUsers = () => {
               return (
                 <tr key={user._id}>
                   <td>{startIndex + index + 1}</td>
+                  <td>
+                    <div className="avatar">
+                      <div className="mask mask-circle w-10 h-10">
+                        <img
+                          src={
+                            user.photo ||
+                            `https://ui-avatars.com/api/?name=${user.name}&background=random`
+                          }
+                          alt={user.name || "User"}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  </td>
                   <td className="font-medium">{user.name || "N/A"}</td>
                   <td>{user.email}</td>
                   <td>

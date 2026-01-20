@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useAgencies from "../../../hooks/useAgencies";
 import usePropertyCountByAgency from "../../../hooks/usePropertyCountByAgency";
 import axiosSecure from "../../../axios/axiosSecure";
@@ -13,13 +13,33 @@ const AgencyRow = ({ agency, index, onDelete }) => {
   return (
     <tr>
       <td>{index + 1}</td>
+      <td>
+        <div className="avatar">
+          <div className="mask mask-squircle w-12 h-12">
+            <img
+              src={
+                agency.logoUrl ||
+                agency.logo ||
+                "https://via.placeholder.com/48?text=No+Image"
+              }
+              alt={agency.agencyName}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </td>
       <td className="font-semibold">{agency.agencyName}</td>
       <td>{agency.email}</td>
       <td>{agency.location}</td>
       <td className="font-bold text-blue-600 text-center">{count}</td>
       <td>
         <div className="flex gap-2 justify-center">
-          <Link to={`/all-agency/${agency._id}`} className="btn btn-xs btn-info">View</Link>
+          <Link
+            to={`/all-agency/${agency._id}`}
+            className="btn btn-xs btn-info"
+          >
+            View
+          </Link>
           <button
             onClick={() => onDelete(agency._id, agency.agencyName)}
             className="btn btn-xs btn-error"
@@ -34,6 +54,9 @@ const AgencyRow = ({ agency, index, onDelete }) => {
 
 const ManageAgencies = () => {
   const { data: agencies = [], refetch, isLoading } = useAgencies();
+useEffect(() => {
+  window.scrollTo(0, 0);
+},[])
 
   const handleDeleteAgency = (agencyId, agencyName) => {
     Swal.fire({
@@ -58,7 +81,7 @@ const ManageAgencies = () => {
             Swal.fire(
               "Error!",
               error.response?.data?.message || "Failed to delete agency",
-              "error"
+              "error",
             );
           });
       }
@@ -83,6 +106,7 @@ const ManageAgencies = () => {
             <thead className="bg-base-200">
               <tr>
                 <th>SL</th>
+                <th>Photo</th>
                 <th>Agency Name</th>
                 <th>Email</th>
                 <th>Location</th>

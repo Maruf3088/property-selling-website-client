@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useProperties from "../../../hooks/useProperties";
 import { Link } from "react-router-dom";
 import { deleteProperty } from "../../../api/properties.api";
@@ -17,8 +17,12 @@ const ManageProperty = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentData = allProperties.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
+
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -41,7 +45,7 @@ const ManageProperty = () => {
     });
   };
 
-   if (isLoading) {
+  if (isLoading) {
     return Loading();
   }
 
@@ -57,6 +61,7 @@ const ManageProperty = () => {
           <thead className="bg-base-200">
             <tr>
               <th>SL</th>
+              <th>Photo</th>
               <th>Property Name</th>
               <th>Type</th>
               <th>Location</th>
@@ -69,6 +74,21 @@ const ManageProperty = () => {
             {currentData.map((property, index) => (
               <tr key={property._id}>
                 <td>{startIndex + index + 1}</td>
+                <td>
+                  <div className="avatar">
+                    <div className="mask mask-squircle w-12 h-12">
+                      <img
+                        src={
+                          property.thumbnail ||
+                          property.propertyImage ||
+                          "https://via.placeholder.com/48?text=No+Image"
+                        }
+                        alt={property.propertyName}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                </td>
                 <td className="font-medium">{property.propertyName}</td>
                 <td>
                   <span className="badge badge-info badge-soft">

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { usePropertyByEmail } from "../../../hooks/usePropertyByEmail";
 import PropertyRow from "./PropertyRow";
@@ -6,11 +6,18 @@ import Loading from "../../../component/loading/Loading";
 
 const AppointmentRequest = () => {
   const { user } = useContext(AuthContext);
-  const { data: sellerProperties = [], refetch , isLoading } = usePropertyByEmail(user?.email);
+  const {
+    data: sellerProperties = [],
+    refetch,
+    isLoading,
+  } = usePropertyByEmail(user?.email);
 
   const approvedProperties = sellerProperties.filter(
-    (property) => property.isAdminAproved === "approved"
+    (property) => property.isAdminAproved === "approved",
   );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (isLoading) {
     return Loading();
@@ -31,9 +38,7 @@ const AppointmentRequest = () => {
               <tr>
                 <th className="text-left px-6 py-4">Property Name</th>
                 <th className="text-left px-6 py-4">Property Status</th>
-                <th className="text-center px-6 py-4">
-                  Total Appointments
-                </th>
+                <th className="text-center px-6 py-4">Total Appointments</th>
                 <th className="text-center px-6 py-4">Action</th>
               </tr>
             </thead>
@@ -43,7 +48,7 @@ const AppointmentRequest = () => {
                 <PropertyRow
                   key={property._id}
                   property={property}
-                    refetch={refetch}
+                  refetch={refetch}
                 />
               ))}
             </tbody>

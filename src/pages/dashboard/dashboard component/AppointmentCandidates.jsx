@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAppointmentCandidatesByPropertyId from "../../../hooks/useAppointmentCandidatesByPropertyId";
 import Swal from "sweetalert2";
@@ -7,8 +7,11 @@ import Loading from "../../../component/loading/Loading";
 
 const AppointmentCandidates = () => {
   const { id: propertyId } = useParams();
-  const { data: candidates = [], isLoading, refetch } =
-    useAppointmentCandidatesByPropertyId(propertyId);
+  const {
+    data: candidates = [],
+    isLoading,
+    refetch,
+  } = useAppointmentCandidatesByPropertyId(propertyId);
 
   const [messages, setMessages] = useState({});
   const [statuses, setStatuses] = useState({});
@@ -36,8 +39,6 @@ const AppointmentCandidates = () => {
           agentMessage,
         };
 
-       
-
         updateAppointmentStatus(appointmentId, payload).then(() => {
           refetch();
         });
@@ -52,8 +53,11 @@ const AppointmentCandidates = () => {
       }
     });
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-   if (isLoading) {
+  if (isLoading) {
     return Loading();
   }
 
@@ -97,9 +101,7 @@ const AppointmentCandidates = () => {
 
             {/* Buyer Message */}
             <div>
-              <p className="font-medium text-gray-700 mb-1">
-                Buyer Message
-              </p>
+              <p className="font-medium text-gray-700 mb-1">Buyer Message</p>
               <p className="text-gray-600 whitespace-pre-wrap">
                 {item.buyerMessage || "No message provided"}
               </p>

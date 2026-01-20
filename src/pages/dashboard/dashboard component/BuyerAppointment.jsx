@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
  import Swal from "sweetalert2";
 
 import { AuthContext } from "../../../provider/AuthProvider";
@@ -30,6 +30,9 @@ const BuyerAppointment = () => {
     }
   };
 
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
  
   const handleDelete = (id) => {
     Swal.fire({

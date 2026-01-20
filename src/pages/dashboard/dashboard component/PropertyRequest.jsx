@@ -18,14 +18,14 @@ const PropertyRequest = () => {
   const { data: allProperties = [], isLoading, refetch } = useAllProperties();
 
   const approvedProperties = allProperties.filter(
-    (property) => property.isAdminAproved === "approved"
+    (property) => property.isAdminAproved === "approved",
   );
 
   const pendingProperties = allProperties.filter(
-    (property) => property.isAdminAproved === "pending"
+    (property) => property.isAdminAproved === "pending",
   );
   const rejectedProperties = allProperties.filter(
-    (property) => property.isAdminAproved === "rejected"
+    (property) => property.isAdminAproved === "rejected",
   );
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,10 +35,11 @@ const PropertyRequest = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentData = approvedProperties.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setCurrentPage(1);
   }, [approvedProperties.length]);
 
@@ -64,8 +65,6 @@ const PropertyRequest = () => {
   };
 
   const handleStatusChange = (id, status) => {
-    
-
     if (status === "approved") {
       approveProperty(id).then((res) => {
         if (res.data.modifiedCount > 0) {
@@ -90,7 +89,7 @@ const PropertyRequest = () => {
     }
   };
 
-   if (isLoading) {
+  if (isLoading) {
     return Loading();
   }
 
@@ -113,6 +112,7 @@ const PropertyRequest = () => {
                 <thead className="bg-base-200">
                   <tr>
                     <th>SL</th>
+                    <th>Photo</th>
                     <th>Property Name</th>
                     <th>Type</th>
                     <th>Location</th>
@@ -125,6 +125,21 @@ const PropertyRequest = () => {
                   {currentData.map((property, index) => (
                     <tr key={property._id}>
                       <td>{startIndex + index + 1}</td>
+                      <td>
+                        <div className="avatar">
+                          <div className="mask mask-squircle w-12 h-12">
+                            <img
+                              src={
+                                property.thumbnail ||
+                                property.propertyImage ||
+                                "https://via.placeholder.com/48?text=No+Image"
+                              }
+                              alt={property.propertyName}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        </div>
+                      </td>
                       <td className="font-medium">{property.propertyName}</td>
                       <td>
                         <span className="badge badge-info badge-soft">
@@ -220,7 +235,7 @@ const PropertyRequest = () => {
       {/* ================= PENDING TABLE ================= */}
       <div>
         <h2 className="text-2xl font-bold mb-4">
-           Properties Request ({pendingProperties.length})
+          Properties Request ({pendingProperties.length})
         </h2>
 
         {pendingProperties.length === 0 ? (
@@ -231,6 +246,7 @@ const PropertyRequest = () => {
               <thead className="bg-base-200">
                 <tr>
                   <th>SL</th>
+                  <th>Photo</th>
                   <th>Property Name</th>
                   <th>Type</th>
                   <th>Location</th>
@@ -244,6 +260,21 @@ const PropertyRequest = () => {
                 {pendingProperties.map((property, index) => (
                   <tr key={property._id}>
                     <td>{index + 1}</td>
+                    <td>
+                      <div className="avatar">
+                        <div className="mask mask-squircle w-12 h-12">
+                          <img
+                            src={
+                              property.thumbnail ||
+                              property.propertyImage ||
+                              "https://via.placeholder.com/48?text=No+Image"
+                            }
+                            alt={property.propertyName}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    </td>
                     <td className="font-medium">{property.propertyName}</td>
                     <td>
                       <span className="badge badge-warning badge-soft">
@@ -313,6 +344,7 @@ const PropertyRequest = () => {
               <thead className="bg-base-200">
                 <tr>
                   <th>SL</th>
+                  <th>Photo</th>
                   <th>Property Name</th>
                   <th>Type</th>
                   <th>Location</th>
@@ -325,6 +357,21 @@ const PropertyRequest = () => {
                 {rejectedProperties.map((property, index) => (
                   <tr key={property._id}>
                     <td>{index + 1}</td>
+                    <td>
+                      <div className="avatar">
+                        <div className="mask mask-squircle w-12 h-12">
+                          <img
+                            src={
+                              property.thumbnail ||
+                              property.propertyImage ||
+                              "https://via.placeholder.com/48?text=No+Image"
+                            }
+                            alt={property.propertyName}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    </td>
                     <td className="font-medium">{property.propertyName}</td>
                     <td>
                       <span className="badge badge-warning badge-soft">
