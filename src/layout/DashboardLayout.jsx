@@ -20,7 +20,7 @@ const DashboardLayout = () => {
         </div>
 
         {/* Page Content */}
-        <div className="np col-span-12 lg:col-span-10  min-h-[calc(100vh-64px)] bg-orange-100">
+        <div className=" col-span-12 lg:col-span-10  min-h-[calc(100vh-64px)] bg-orange-100">
           <Outlet />
         </div>
       </div>
